@@ -20,14 +20,14 @@ session_start();
                 $conditionalQuery = "select * from users where UserID = '$techid'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
                     
-                if($CondQueryRes && mysqli_num_rows($CondQueryRes) <= 0){
+                if(mysqli_num_rows($CondQueryRes) <= 0){
                     //register the following values into the user table
                     $queryRes = "insert into users (UserID, First_Name, Last_Name, Phone, Password) values ('$pharmid','$firstName','$lastName', '$phone','$password')";
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
 
                     //register the following values into the pharmacist table
-                    $queryRes = "insert into pharmacist (PharmLicense_Num, PharmID, First_Name, Last_Name, Phone, Password, Office_Address, Practice_Province, Photo_Signature) values ('$pharmLicenseNum', '$pharmid', '$firstName', '$lastName', '$phone', '$password', '$office_address', '$practice_province', '$photo_signature')";
+                    $queryRes = "insert into technican (TechID, First_Name, Last_Name, Phone, Password) values ('$techid', '$firstName', '$lastName', '$phone', '$password')";
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
                     // redirect user to login page
@@ -37,6 +37,8 @@ session_start();
                 else{
                     echo "TechID already exists. Enter a different value.";
                 }
+            } else {
+                echo "TechID or Phone number were not numerical values, try again.";
             }
             
         } 

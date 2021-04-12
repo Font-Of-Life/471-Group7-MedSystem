@@ -36,7 +36,7 @@ session_start();
                     $CondQueryRes2 = mysqli_query($conn, $conditionalQuery2);
 
                     //checks to see if the tables are not empty, if so that means they are not registered in the database
-                    if($CondQueryRes && mysqli_num_rows($CondQueryRes) <= 0 && $CondQueryRes2 <= 0 && $CondQueryRes2){
+                    if(mysqli_num_rows($CondQueryRes2) <= 0 && mysqli_num_rows($CondQueryRes) <= 0){
                         //register the following values into the user table
                         $queryRes = "insert into users (UserID, First_Name, Last_Name, Phone, Password) values ('$pharmid','$firstName','$lastName', '$phone','$password')";
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
@@ -52,7 +52,7 @@ session_start();
                         die;
                     } 
                     else {
-                        echo "PharmID already exists or License, please enter a different value.";
+                        echo "PharmID or License Number already exists, please enter a different value.";
                     }
                 } 
                 else{
