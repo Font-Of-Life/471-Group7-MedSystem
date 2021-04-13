@@ -70,7 +70,9 @@
                 <p><center>HC# = Government Health Card Number</center></p>
                 <br>
             </div>
-
+            <div>
+                <a><?php echo $message?></a>
+            </div>
             <div>
                 <label>Select COVID Status:</label>
                 <select name="covidstat">
@@ -100,6 +102,7 @@
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $covidStat = $_POST['covidstat'];
         $patientSearch = $_POST['searchfor'];
+        $message ="";
     }
 
     //if the $covidStat is null, meaning the page has first loaded up, set it to All Automatically.
@@ -147,7 +150,8 @@
             }
             //else this means no data was found in the database so it displays the message to the page. 
             else {
-                echo "No Data in database about this category at the moment.";
+                //echo "No Data in database about this category at the moment.";
+                $message = "No Data in database about this category at the moment.";
             }
         }
         //else this means there is something in the field of the patient search text field, so checks if its numerical value
@@ -189,12 +193,14 @@
             } 
             //if nothing is returned that means the user does not exist in the database, so display a message to the user about it
             else {
-                echo "User not found in the database.";
+                //echo "User not found in the database.";
+                $message = "User not found in the database.";
             }
         } 
         //else if the patientsearch isnt numerical that means it is a string, and we dont allow it so we display a message to the user about it
         else {
-            echo "Patient search only works for numerical values, try again.";
+            //echo "Patient search only works for numerical values, try again.";
+            $message = "Patient search only works for numerical values, try again.";
         }
     }
     //else this means that the user chose either Positve, Negative, Or Pending for covid Status dropdown menu bar
@@ -238,7 +244,8 @@
             } 
             //else this means there are no patients/data in the database with that information, so prints a message to the user about it
             else {
-                echo "No Data in database about this category at the moment.";
+                //echo "No Data in database about this category at the moment.";
+                $message = "No Data in database about this category at the moment.";
             }
         } 
         //else this means the field in the patientSearch input text field isnt empty, so checks if it is a number
@@ -278,12 +285,15 @@
             }
             //else this means that there is no user with that government health card number in the database with that covid status, so display a message to the user about it. 
             else {
-                echo "User not found in the database of this COVID category.";
+                //echo "User not found in the database of this COVID category.";
+                $message = "User not found in the database of this COVID category.";
+                
             }
         }
         //else this means the text field for patient Search input was a string, and that search input only allows integers so display a message to the user about it. 
         else {
-            echo "Patient search only works for numerical values, try again.";
+            //echo "Patient search only works for numerical values, try again.";
+            $message = "Patient search only works for numerical values, try again.";
         }
     }
 

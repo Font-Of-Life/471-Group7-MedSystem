@@ -8,6 +8,7 @@
         //collect data from the post variables in the html
         $userid = $_POST['userid'];
         $password = $_POST['password'];
+        $message="";
 
         //checks to see if the userid and password are valid and arent empty
         if(is_numeric($userid) && !empty($password)){
@@ -25,10 +26,12 @@
                     die;
                 }
             }
-            echo "Invalid/Incorrect Email or Password.";
+            //echo "Invalid/Incorrect Email or Password.";
+            $message="Invalid/Incorrect Email or Password.";
         }
         else{
-            echo "Invalid Information. Try again.";
+            //echo "Invalid Information. Try again.";
+            $message="Invalid Information. Try again.";
         }
     }
 ?>
@@ -42,10 +45,9 @@
 
 <body>
     <div id = "formbox">
-
         <form method="post">
-            <div style="font-size: 16px; margin: 12px; color: black; font-weight:bold;">Login</div>
-
+            <div style="font-size: 20px; margin: 12px; color: black; font-weight:bold;">Login</div>
+            <p><?php echo $message ?></p>
             <p>
                 <label>UserID:</label>
                 <input id="textbox" type="text" name="userid"/>

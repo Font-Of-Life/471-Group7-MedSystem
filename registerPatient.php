@@ -25,6 +25,8 @@ session_start();
         $providerNotes = $_POST['notes'];
         $email = $_POST['email'];
 
+        $message = "";
+
         // if not empty and it is valid, then do the following
         if (!empty($birthday)&& !empty($address) && !empty($techid) && !empty($phone) && !empty($firstName) && !empty($lastName) && !empty($weight) && !empty($height) && !empty($prefLanguage) && !empty($healthcardnum) && !empty($sex)) {
             if(is_numeric($phone) && is_numeric($techid) && is_numeric($healthcardnum)){
@@ -45,19 +47,23 @@ session_start();
                         exit;  
                     }
                     else {
-                        echo "userID does not exist, try again.";
+                        //echo "userID does not exist, try again.";
+                        $message = "userID does not exist, try again.";
                     }   
                 }
                 else{
-                    echo "Gov. Health card already exists, try again.";
+                    //echo "Gov. Health card already exists, try again.";
+                    $message = "Gov. Health card already exists, try again.";
                 }
             } 
             else {
-                echo "TechID, Phone number, health card number were not numerical values, try again.";
+                //echo "TechID, Phone number, health card number were not numerical values, try again.";
+                $message = "TechID, Phone number, health card number were not numerical values, try again.";
             }
         } 
         else {
-            echo "The only empty fields allowed are provider notes and email, try again.";
+            //echo "The only empty fields allowed are provider notes and email, try again.";
+            $message = "The only empty fields allowed are provider notes and email, try again.";
         }
     }
 ?>
@@ -131,6 +137,7 @@ session_start();
             <div id="formbox">
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient Registration</div>
+                            <p><?php echo $message?></p>
                             <p>
                                 <label>Government Health Card Number:</label>
                                 <input type="text" id="textbox" name="healthcard"/>

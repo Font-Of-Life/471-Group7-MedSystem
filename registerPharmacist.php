@@ -17,6 +17,7 @@ session_start();
         $office_address = $_POST['address'];
         $practice_province = $_POST['province'];
         $photo_signature = $_POST['signature'];
+        $message = "";
 
         //checks to see if any of the values are not empty in the post section of the html
         if (!empty($pharmid) && !empty($pharmLicenseNum) && !empty($phone) && !empty($firstName) && !empty($lastName) && !empty($password) && !empty($office_address) && !empty($practice_province) && !empty($photo_signature)) {
@@ -52,19 +53,23 @@ session_start();
                         die;
                     } 
                     else {
-                        echo "PharmID or License Number already exists, please enter a different value.";
+                        //echo "PharmID or License Number already exists, please enter a different value.";
+                        $message = "PharmID or License Number already exists, please enter a different value.";
                     }
                 } 
                 else{
-                    echo "Invalid information, pharmid, pharmLicenseNum, and Phone have to be integers only.";
+                    //echo "Invalid information, pharmid, pharmLicenseNum, and Phone have to be integers only.";
+                    $message = "Invalid information, pharmid, pharmLicenseNum, and Phone have to be integers only.";
                 }     
             } 
             else {
-                echo "invalid information. First & last name, office address, practice province, photo signature cannot be integer values only.";
+                //echo "invalid information. First & last name, office address, practice province, photo signature cannot be integer values only.";
+                $message = "invalid information. First & last name, office address, practice province, photo signature cannot be integer values only.";
             }
         } 
         else {
-            echo "Invalid Information Try again. Cannot have a empty field.";
+            //echo "Invalid Information Try again. Cannot have a empty field.";
+            $message = "Invalid Information Try again. Cannot have a empty field.";
         }
     }
 
@@ -81,6 +86,7 @@ session_start();
             <div id="formbox">
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">User Registration</div>
+                            <p><?php echo $message?></p>
                             <p>
                                 <label>PharmID:</label>
                                 <input type="text" id="textbox" name="pharmid"/>

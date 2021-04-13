@@ -13,6 +13,7 @@ session_start();
         $firstName = $_POST['first_name'];
         $lastName = $_POST['last_name'];
         $password = $_POST['password'];
+        $message = "";
 
         // if not empty and it is valid, then do the following
         if (!empty($techid) && !empty($phone) && !empty($firstName) && !empty($lastName) && !empty($password)) {
@@ -35,15 +36,18 @@ session_start();
                     die;
                 }
                 else{
-                    echo "TechID already exists. Enter a different value.";
+                    //echo "TechID already exists. Enter a different value.";
+                    $message = "TechID already exists. Enter a different value.";
                 }
             } else {
-                echo "TechID or Phone number were not numerical values, try again.";
+                //echo "TechID or Phone number were not numerical values, try again.";
+                $message = "TechID or Phone number were not numerical values, try again.";
             }
             
         } 
         else {
-            echo "Cannot have a empty field, try again.";
+            //echo "Cannot have a empty field, try again.";
+            $message = "Cannot have a empty field, try again.";
         }
     }
 
@@ -60,6 +64,7 @@ session_start();
             <div id="formbox">
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">User Registration</div>
+                            <p><?php echo $message?></p>
                             <p>
                                 <label>TechID:</label>
                                 <input type="text" id="textbox" name="techid"/>
