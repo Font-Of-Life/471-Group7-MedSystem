@@ -10,7 +10,7 @@
         $password = $_POST['password'];
 
         //checks to see if the userid and password are valid and arent empty
-        if(!empty($userid) && is_numeric($userid) && !empty($password)){
+        if(is_numeric($userid) && !empty($password)){
             //unsure about this section, as userid should contain all userIds or no?
             $DataQuery = "(select Password from users where UserID = '$userid') limit 1";
             $QueryResult = mysqli_query($conn, $DataQuery);
