@@ -1,7 +1,7 @@
 # 471-Group7-MedSystem
 
 ## Setup Instruction Steps:
-1. Download appServ. ***Take note of your root username and root password for mySQL installation, we need it for the steps later on!**
+1. Download appServ. **Take note of your root username and root password for mySQL installation, we need it for the steps later on!**
 
 2. Upon downloading appServ onto your computer go to your search bar on windows and type **MySQL Start** and click on it, and allow access.
 
