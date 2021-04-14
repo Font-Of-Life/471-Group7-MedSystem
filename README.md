@@ -15,7 +15,7 @@
 
 7. Upon it opening, change the **"$db_username"** variable to be your root username for your mySQL installation, and the **"db_password"** to be your password for mySQL. And then save it, and close it.
 
-8. Go to the AppServ folder. ***By default it should be on your local disk drive (C:) or "C:\" in windows explorer bar.
+8. Go to the AppServ folder. **By default it should be on your local disk drive (C:) or "C:\" in windows explorer bar.**
 
 9. Drag that folder from **step 5**, to the folder in appServ named **"www"**.
 
