@@ -23,7 +23,7 @@
 
 11. Upon logging in select the **"Import"** option, hit the **"choose file"** button, and then find and select the **med_database.sql** file, then hit the **"Go"** button.
 
-12. The file should have been uploaded onto myphpadmin, now go to http://localhost/"(**insert your folder name from step 9 here**)" and you have access to the site!
+12. The file should have been uploaded onto myphpadmin, now go to http://localhost/"( **insert your folder name from step 9 here** )" and you have access to the site!
 
 If ya want to end the process of MySQL and Apache, just type into your search bar on your computer **"MySQL Stop"** and **"Apache Stop"** respectively, 
 and do the same thing as **step 2 and 3**. 
