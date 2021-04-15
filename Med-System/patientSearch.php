@@ -27,7 +27,6 @@
 <html>
     <head>
         <title>Patient Profiles</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
 
         <!--References used: https://www.w3schools.com/tags/att_meta_name.asp-->
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -351,7 +350,7 @@
             box-shadow: 0px 4px 8px 0px;
             overflow: hidden;
             outline: none;
-            border: none;
+            border: 1px solid black;
         }
 
         .nameText{
@@ -396,7 +395,7 @@
         }
 
         .navigationBar a:hover{
-            background-color: lightgreen;
+            background-color: lime;
         }
 
         /* reference used for this css:  
