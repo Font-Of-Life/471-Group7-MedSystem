@@ -21,9 +21,13 @@
 
 10. Now go type into a web browser "http://localhost/phpmyadmin", and log in with your corresponding mySQL root username and password you made during installation from **step 1**.
 
-11. Upon logging in select the **"Import"** option, hit the **"choose file"** button, and then find and select the **med_database.sql** file, then hit the **"Go"** button.
+11. Upon logging in select **"New+"** on the left hand side to create a new database, then name it whatever name you want.
 
-12. The file should have been uploaded onto myphpadmin, now go to http://localhost/ and type your folder name from **Step 9** after the **"/"** then you have access to the site!
+12. Upon creation Select the **"Import"** option, hit the **"choose file"** button, and then find and select the **med_database.sql** file, then hit the **"Go"** button.
+
+13. Finally open up the connections.php file again, and this time change your $db_name to be the name of the database you imported the data to in **step 12.**
+
+13. The file should have been uploaded onto myphpadmin, now go to http://localhost/ and type your folder name from **Step 9** after the **"/"** then you have access to the site!
 
 If ya want to end the process of MySQL and Apache, just type into your search bar on your computer **"MySQL Stop"** and **"Apache Stop"** respectively, 
 and do the same thing as **step 2 and 3**. 
