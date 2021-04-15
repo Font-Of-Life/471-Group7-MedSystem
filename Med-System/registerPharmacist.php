@@ -156,8 +156,8 @@ session_start();
                             <input id="buttonStuff" type="submit" value="Register Account">
                             <br>
                             <br>
-                            <a href="LoginPage.php" style="font-size: 17px; color: black;">Login</a><br><br>
-                            <a href="registerTechnican.php" style="font-size: 17px; color: black;">Register As Technican</a><br><br>
+                            <a href="LoginPage.php" style="font-size: 17px; color: black; font-weight: bold;">Login</a><br><br>
+                            <a href="registerTechnican.php" style="font-size: 17px; color: black; font-weight: bold;">Register As Technican</a><br><br>
                     </form>
             </div>
     </body>

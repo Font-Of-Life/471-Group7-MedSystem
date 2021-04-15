@@ -105,6 +105,7 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
+            margin-bottom: 20px;
         }
 
         .navigationBar a{
@@ -118,8 +119,34 @@ session_start();
         }
 
         .navigationBar a:hover{
-            background-color: lightgreen;
+            background-color: lime;
         }
+        
+        #buttonStuff{
+            background-color: #0BDA51;
+            color: black;
+            padding: 0.5rem;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 2px;
+            border: 3px solid black;
+            width: 25%;
+            padding: 5%;
+        }
+
+	body{
+        background-color: lightgrey;
+    }
     </style>
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -139,7 +166,7 @@ session_start();
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient Registration</div>
                             <p><?php echo $message?></p>
                             <p>
-                                <label>Government Health Card Number:</label>
+                                <label>Government Health Card #:</label>
                                 <input type="text" id="textbox" name="healthcard"/>
                             </p>
                             <p>
@@ -203,7 +230,7 @@ session_start();
                                 </select>
                             </p>
 
-                            <input type="submit" value="Register"/>
+                            <input id="buttonStuff" type="submit" value="Register"/>
                             <br>
                     </form>
             </div>

@@ -91,7 +91,7 @@
             <input id="buttonStuff" type="submit" value="Login"/>
             <br>
             <br>
-            <a href="registration.php" style="font-size: 17px; color: black;">Click Here to Register</a>
+            <a href="registration.php" style="font-size: 17px; color: black; font-weight: bold;">Click Here to Register</a>
             <br>
         </form>
     </div>
