@@ -72,7 +72,6 @@ session_start();
 <html>
     <head>
             <title>Patient Registration</title>
-            <link rel="stylesheet" href="style.css" type="text/css">
     </head>
 
     <style>
@@ -121,7 +120,7 @@ session_start();
         .navigationBar a:hover{
             background-color: lime;
         }
-        
+
         #buttonStuff{
             background-color: #0BDA51;
             color: black;
@@ -130,6 +129,7 @@ session_start();
             font-weight: bold;
             border: 2px solid black;
             border-radius: 1px solid black;
+            cursor: pointer;
         }
 
         #formbox{
