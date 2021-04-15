@@ -13,7 +13,6 @@
 <html>
     <head>
         <title>Patient Details</title>
-        <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <style>
@@ -28,7 +27,7 @@
             text-align: center;
             font-style: italic;
             font: arial;
-            font-weight: bold;
+            
         }
 
         .titleClass{
@@ -37,8 +36,48 @@
             background-color: mediumseagreen;
         }
 
+        .navigationBar{
+            background-color: mediumseagreen;
+            overflow: hidden;
+            text-align: center;
+            color: white;
+        }
+
+        .navigationBar a{
+            float: left;
+            padding-left:  20px;
+            padding-right: 20px;
+            text-decoration: none;
+            font-size: 20px;
+            
+            color: black;
+        }
+
+        .navigationBar a:hover{
+            background-color: lightgreen;
+        }
+
         body{
             background-color: lightgrey;
+        }
+
+        #buttonStuff{
+            margin-left: 10px;
+            background-color: #0BDA51;
+            color: black;
+            font-size: 14px;
+            
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
         }
     </style>
     <body>
@@ -51,10 +90,7 @@
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
         </div>
-        <div>
-            <center><h1>Patient <?php echo $patientHealthCardNum?></h1></center>
-        </div>
-        <div>
+        <div id="formbox">
             <form>
                 <label>Edit:</label>
                 <select name="edit">
@@ -64,10 +100,13 @@
                     <option value="DrugPres">Drug Prescription</option>
                     <option value="Allergies">Allergies</option>
                 </select>
-                <input type="submit" name="submit" value="Edit">
+                <input id = "buttonStuff" type="submit" name="submit" value="Edit">
             </form>
-            
         </div>
+        <div>
+            <center><h1>Patient <?php echo $patientHealthCardNum?></h1></center>
+        </div>
+        
     </body>
 </html>
 
@@ -134,23 +173,23 @@
         }
         
         //displays the data to the html
-        echo "<p>Patient Health Card Number: $healthcard</p>";
-        echo "<p>Patient Name: $name</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Patient Health Card Number: $healthcard</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Patient Name: $name</p>";
         //reference for text outline/shadow for COVID Status: https://stackoverflow.com/questions/4919076/outline-effect-to-text
-        echo "<p style='color:$color; text-weight: bold; text-shadow: -1px -1px 0 #000, 0.8px -1px 0 #000, -1px 0.8px 0 #000, 0.8px 0.8px 0 #000;'> COVID Status: $covidStat</p>";
-        echo "<p>Sex: $sex</p>";
-        echo "<p>Birthday: $birthday</p>";
-        echo "<p>Weight: $weight</p>";
-        echo "<p>Height: $height</p>";
-        echo "<p>Preferred Language: $prefLang</p>";
-        echo "<p>Address: $Address</p>";
-        echo "<p>Phone: $phone</p>";
-        echo "<p>Email: $email</p>";
-        echo "<p>Provider Notes: $ProviderNotes</p>";
-        echo "<p>UserID of User Who created this profile: $userid</p>";
+        echo "<p style='text-align: center; font-weight: bold; font-size: 16px; color:$color; text-weight: bold; text-shadow: -1px -1px 0 #000, 0.8px -1px 0 #000, -1px 0.8px 0 #000, 0.8px 0.8px 0 #000;'> COVID Status: $covidStat</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Sex: $sex</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Birthday: $birthday</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Weight: $weight</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Height: $height</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Preferred Language: $prefLang</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Address: $Address</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Phone: $phone</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Email: $email</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Provider Notes: $ProviderNotes</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>UserID of User Who created this profile: $userid</p>";
 
         //displays the allergy section of the patient
-        echo "<h2>Allergy List</h2>";
+        echo "<h2 style='text-align: center;'>Allergy List</h2>";
         //gets the allergy data of the patient from the sql database
         $getAllergy = "select * from can_have where Gov_HealthCard_Num = '$healthcard'";
         $allergyQueryRes = mysqli_query($conn, $getAllergy);
@@ -160,16 +199,16 @@
             //loops through all the entries in the table to display all the allergies of the patient
             while($row = mysqli_fetch_assoc($allergyQueryRes)){
                 $allergicTo = $row['Ingredient_Name'];
-                echo "<p>$allergicTo</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>$allergicTo</p>";
             }        
         } 
         else {
             //else this means the patient has no allergies so display a message saying none.
-            echo "<p>None</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>None</p>";
         }
 
         //displays the drug prescription section of the patient
-        echo "<h2>Drug Prescription List</h2>";
+        echo "<h2 style='text-align: center;'>Drug Prescription List</h2>";
         //retrieve the drug prescriptions the patient has from the sql database
         $getDrugPresription = "select * from drug_prescription where Patient_HealthCard_Num = '$healthcard'";
         $drugPrescriptionQuery = mysqli_query($conn,$getDrugPresription);
@@ -192,26 +231,26 @@
                 $DocLicenseNum = $row['DocLicense_Num'];
 
                 //prints out the data saved in the variables into the html
-                echo "<p>Prescribed By Doctor: $PrescriberName</p>";
-                echo "<p>Prescriber Doctor License Number: $DocLicenseNum</p>";
-                echo "<p>Pharmacist ID who gives prescription: $PharmID</p>";
-                echo "<p>Pharmacist License Number: $PharmLicenseNumber</p>";
-                echo "<p>Date Recieved: $Date_Recieved</p>";
-                echo "<p>Drug ID: $DIN</p>";
-                echo "<p>RX_Number: $RX_Number</p>";
-                echo "<p>Fill Status: $FillStat</p>";
-                echo "<p>Date Last Filled: $DateLastFilled</p>";
-                echo "<p>Amount Last Filled: $AmountLastFilled</p>";
-                echo "<p>Instructions: $Instruction</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Prescribed By Doctor: $PrescriberName</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Prescriber Doctor License Number: $DocLicenseNum</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist ID who gives prescription: $PharmID</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist License Number: $PharmLicenseNumber</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Date Recieved: $Date_Recieved</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Drug ID: $DIN</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>RX_Number: $RX_Number</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Fill Status: $FillStat</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Date Last Filled: $DateLastFilled</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Amount Last Filled: $AmountLastFilled</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Instructions: $Instruction</p>";
             }
         } 
         else {
             //else this means the patient has no current drug prescriptions, so displays that message to the html
-            echo "<p>No Drug Prescriptions.</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No Drug Prescriptions.</p>";
         }
 
         //retrieves and displays the information of the patient's dependents
-        echo "<h2>Dependent List</h2>";
+        echo "<h2 style='text-align: center;'>Dependent List</h2>";
         //retrieve the data of the patient's dependents from the sql database
         $getPatientDependents = "select * from dependent where Parent_HealthCard_Num = '$healthcard'";
         $patientDependentQuery = mysqli_query($conn, $getPatientDependents);
@@ -225,19 +264,19 @@
                 $DepRelationship = $row['Relationship'];
 
                 //displays the information from the variables onto the html
-                echo "<p>Dependent Name: $depName</p>";
-                echo "<p>Dependent Relationship: $DepRelationship</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>Dependent Relationship: $DepRelationship</p>";
             }
         }
         else{
             //else this means that the patient has no dependents, so prints a message to the html about it
-            echo "<p>No Dependents</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No Dependents</p>";
         }
         
         //displays the insurance section of the patient
-        echo "<h2>Insurance</h2>";
+        echo "<h2 style='text-align: center;'>Insurance</h2>";
         //retrieves the data regarding the patient's insurance from the sql database
-        $getPatientInsurance = "select * from `insurance plan` where Policy_Holder_Health_Num ='$healthcard'";
+        $getPatientInsurance = "select * from `insurance_plan` where Policy_Holder_Health_Num ='$healthcard'";
         $insuranceQueryRes = mysqli_query($conn, $getPatientInsurance);
         
         //checks to see if the recieved table from the sql database is empty
@@ -249,18 +288,18 @@
             $EndDate = $insuranceQueryRes['End_Date'];
 
             //displays the information stored in each variable onto the html
-            echo "<p>Insurance Policy Number: $policyNum</p>";
-            echo "<p>Insurance Company Name: $InsCompanyName</p>";
-            echo "<p>Start Date: $Start_Date</p>";
-            echo "<p>End Date: $EndDate</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>Insurance Policy Number: $policyNum</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>Insurance Company Name: $InsCompanyName</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>Start Date: $Start_Date</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>End Date: $EndDate</p>";
         }
         else{
             //else this means the patient has no insurance so display a message about it.
-            echo "<p>No insurance Plan</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No insurance Plan</p>";
         }
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>There was an problem retrieving this information.</p>";
+        echo"<p style='text-align: center;  font-size: 16px;'>There was an problem retrieving this information.</p>";
     }
 ?>
