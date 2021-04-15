@@ -72,6 +72,7 @@
             font-weight: bold;
             border: 2px solid black;
             border-radius: 1px solid black;
+            cursor: pointer;
         }
     </style>
 
