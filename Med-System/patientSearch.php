@@ -190,9 +190,11 @@
             //else this means there is something in the field of the patient search text field, so checks if its numerical value
             else if(is_numeric($patientSearch)){
                 //if it is, gets all the columns in the query patient_profile where Gov_Health_Num result is the same as the value in patientSearch
-                $queryRes = "select * from patient_profile where Gov_HealthCard_Num = '$patientSearch'";
-                //gets the query and saves it into the variable queryResult
-                $queryResult = mysqli_query($conn,$queryRes);
+               //search query, sql injection proofed
+                $stmt = $conn->prepare('SELECT * FROM patient_profile WHERE Gov_HealthCard_Num = ?');
+                $stmt->bind_param('i', $patientSearch); // 'i' specifies the variable type => 'integer'
+                $stmt->execute();
+                $queryResult = $stmt->get_result();
 
                 //checks to see if the number of rows in the table returned is greater than 0, meaning it isnt empty
                 if(mysqli_num_rows($queryResult) > 0){
