@@ -123,6 +123,13 @@
             header("Location: editInsuranceDetails.php");
             exit;
         }
+        if($optionSelected == "Aller"){
+            //set session variables for the property that was clicked
+            $_SESSION['HC'] = $hcNum;
+            // then redirect to viewProperty page
+            header("Location: editAllergyDetails.php");
+            exit;
+        }
 		
     }
     /* if(['edit'] == 'POST'){

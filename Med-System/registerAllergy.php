@@ -11,8 +11,8 @@ session_start();
         //Ingredient_Name	Drug/Ingredient_Alt	Drug/Ingredient_Usage
         $healthcard = $_POST['healthcard'];
         $Ingredient_Name = $_POST['Ingredient_Name'];
-		$DrugIngredient_Alt = $_POST['Drug/Ingredient_Alt'];
-        $DrugIngredient_Usage = $_POST['Drug/Ingredient_Usage'];
+		//$DrugIngredient_Alt = $_POST['Drug/Ingredient_Alt'];
+        //$DrugIngredient_Usage = $_POST['Drug/Ingredient_Usage'];
 
         $message = "";
 
@@ -142,14 +142,6 @@ session_start();
                             <p>
                                 <label>Ingredient Name:</label>
                                 <input type="text" id="textbox" name="Ingredient_Name"/>
-                            </p>
-                            <p>
-                                <label>Drug/Ingredient Alternative:</label>
-                                <input type="text" id="textbox" name="Drug/Ingredient_Alt"/>
-                            </p>
-                            <p>
-                                <label>Drug/Ingredient Usage:</label>
-                                <input type="text" id="textbox" name="Drug/Ingredient_Usage"/>
                             </p>
 
                             <input type="submit" value="Register"/>
