@@ -91,7 +91,7 @@
             <a href="registerPatient.php">Add Patient Profile</a>
         </div>
         <div id="formbox">
-            <form>
+            <form method="post" action="">
                 <label>Edit:</label>
                 <select name="edit">
                     <option value="PatientProfile">Patient Profile</option>
@@ -100,7 +100,7 @@
                     <option value="DrugPres">Drug Prescription</option>
                     <option value="Allergies">Allergies</option>
                 </select>
-                <input id = "buttonStuff" type="submit" name="submit" value="Edit">
+                <input id = "buttonStuff" type="submit" name="editButton" value="Edit">
             </form>
         </div>
         <div>
@@ -113,12 +113,24 @@
 <?php
     //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
     //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
-    /* if($_SERVER['REQUEST_METHOD'] == "POST"){
-        $editChoice = $_POST['edit'];
-        if($editChoice == "PatientProfile"){
-            $_SESSION['Gov_HealthCard_Num'] = $patientHealthCardNum;
+    if (isset($_POST['editButton'])) {
+        if($_POST['edit'] == "PatientProfile"){
+            //set session variables for the property that was clicked
+            $_SESSION['Gov_HealthCard_Num'] = $_POST['edit'];
+            // then redirect to viewProperty page
             header("Location: editPatientProfile.php");
-            die;
+            exit;  
+        }
+		
+    }
+    /* if(['edit'] == 'POST'){
+        echo $_POST['editButton'];
+        if($_POST['editButton'] == "PatientProfile"){
+            //set session variables for the property that was clicked
+            $_SESSION['Gov_HealthCard_Num'] = $patientHealthCardNum;
+            // then redirect to viewProperty page
+            header("Location: editPatientProfile.php");
+            exit;  
         }
     } */
     //gets the query data from the sql database of the current selected patient in the patient profile table 
@@ -162,7 +174,7 @@
         //checks to see if the covid status of the current patient is positive, if it is save the value of lime to it.
         if($covidStat == "Positive"){
             $color = "red";
-        }
+        } 
         //checks to see if the covid status of the current patient is negative, if it is save the value of red to it.
         else if($covidStat == "Negative"){
             $color = "lime";

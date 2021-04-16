@@ -74,6 +74,25 @@
             border-radius: 1px solid black;
             cursor: pointer;
         }
+        .navigationBar{
+            background-color: mediumseagreen;
+            overflow: hidden;
+            text-align: center;
+            color: white;
+        }
+
+        .navigationBar a{
+            float: left;
+            padding-left:  20px;
+            padding-right: 20px;
+            text-decoration: none;
+            font-size: 20px;
+            color: black;
+        }
+
+        .navigationBar a:hover{
+            background-color: lime;
+        }
     </style>
 
     <body>
@@ -366,7 +385,7 @@
                 -> for the cursor: https://www.w3schools.com/cssref/pr_class_cursor.asp */
             border: none;
             padding: 15px;
-            color: white;
+            color: black;
             outline: 0px;
             background-color: mediumseagreen;
             cursor: pointer;
@@ -376,27 +395,9 @@
         }
         
         .card button:hover{
-            background-color: green;
-        }
-
-        .navigationBar{
-            background-color: mediumseagreen;
-            overflow: hidden;
-            text-align: center;
-            color: white;
-        }
-
-        .navigationBar a{
-            float: left;
-            padding-left:  20px;
-            padding-right: 20px;
-            text-decoration: none;
-            font-size: 20px;
+            background-color: #0BDA51;
             color: black;
-        }
-
-        .navigationBar a:hover{
-            background-color: lime;
+            font-style: italic;
         }
 
         /* reference used for this css:  

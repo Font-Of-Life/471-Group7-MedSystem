@@ -113,7 +113,6 @@ session_start();
             padding-right: 20px;
             text-decoration: none;
             font-size: 20px;
-            font-weight: bold;
             color: black;
         }
 
