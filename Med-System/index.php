@@ -23,6 +23,5 @@
         <!--  List options to do the other stuff here  in div classes-->
         <div> <a href="patientSearch.php">Go to patient profiles</a> </div>
         <div> <a href="drugSearch.php">Go to drug profiles</a> </div>
-        <div> Go to drug prescription </div>
     </body>
 </html>

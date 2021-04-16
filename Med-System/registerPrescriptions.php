@@ -6,13 +6,12 @@ session_start();
     include("LoginChecker.php");
 
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
+    $pharmID = $_SESSION['UserID'];
+
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // collect data from the post variables in the html section below
-        $healthcard = $_POST['healthcard'];
-        $pharmLicNum = $_POST['pharmLicNum'];
-        $pharmID = $_POST['pharmID'];
         $docLicNum = $_POST['docLicNum'];
         $prescibeName = $_POST['prescibeName'];
         $DINum = $_POST['DINum'];
@@ -22,6 +21,9 @@ session_start();
         $instruct = $_POST['instruct'];
         $lastFillDate = $_POST['lastFillDate'];
         $lastFillQuantity = $_POST['lastFillQuantity'];
+        // $healthcard = $_POST['healthcard'];
+        //$pharmLicNum = $_POST['pharmLicNum'];
+        //$pharmID = $_POST['pharmID'];
 
         $message = "before first if statement";
 
@@ -40,14 +42,8 @@ session_start();
                 $queryPatientGet = "select * from patient_profile where Gov_HealthCard_Num = '$patientHealthCardNum'";
                 $queryPatientRes = mysqli_query($conn, $queryPatientGet);
 
-                $conditionalQuery2 = "select * from pharmacist where PharmLicense_Num = '$pharmLicNum'";
-                $CondQueryRes2 = mysqli_query($conn, $conditionalQuery2);
-
                 $conditionalQuery3 = "select * from doctor where Doctor_LicenseNum = '$docLicNum'";
                 $CondQueryRes3 = mysqli_query($conn, $conditionalQuery3);
-
-                $conditionalQuery4 = "select * from pharmacist where PharmID = '$pharmID'";
-                $CondQueryRes4 = mysqli_query($conn, $conditionalQuery4);
 
                 $conditionalQuery5 = "select * from prescriber where Prescriber_Name = '$prescibeName'";
                 $CondQueryRes5 = mysqli_query($conn, $conditionalQuery5);
@@ -55,25 +51,19 @@ session_start();
                 $conditionalQuery6 = "select * from drug_prescription where RX_Number = '$rxNum'";
                 $CondQueryRes6 = mysqli_query($conn, $conditionalQuery6);
 
+                $message='Patient'.$patientHealthCardNum;
 
                 if(mysqli_num_rows($CondQueryRes6)>0){
                     $message = "rx Number already exist, cannot add duplicate prescription";
                 }
                 else{
                     $erro = 0;
-                    $message='';
                     if(mysqli_num_rows($CondQueryRes) <= 0){
                         $message .= "Drug does not exist, try again.\n";
                         $error=1;
                     }
                     if((mysqli_num_rows($queryPatientRes) <= 0)){
                         $message .= "Patient does not exist, try again.\n";
-                        $error=1;
-
-                    }
-
-                    if((!empty($pharmLicNum) && (mysqli_num_rows($CondQueryRes2) <= 0)) || (!empty($pharmID) && (mysqli_num_rows($CondQueryRes4) <= 0))){
-                        $message .= "Pharmacist does not exist, try again.\n";
                         $error=1;
 
                     }
@@ -88,9 +78,12 @@ session_start();
                     }
 
                     if($error == 0){
+                        //get user's pharmacy license number
+                        $queryPharmLicnsenGet = "select PharmLicense_Num from pharmacist where PharmID = '$pharmID'";
+                        $queryPharmLicnsenRes = mysqli_query($conn, $conditionalQuery4);
+                        $pharmLicNum = mysqli_fetch_assoc($queryPharmLicnsenRes)['PharmLicense_Num'];
+        
                         //Set to null if empty form
-                        $pharmLicNum = !empty($pharmLicNum) ? "'$pharmLicNum'" : "NULL";
-                        $pharmID = !empty($pharmID) ? "'$pharmID'" : "NULL";
                         $docLicNum = !empty($docLicNum) ? "'$docLicNum'" : "NULL";
                         $prescibeName = !empty($prescibeName) ? "'$prescibeName'" : "NULL";
                         $recDate = !empty($recDate) ? "'$recDate'" : "NULL";
@@ -99,46 +92,18 @@ session_start();
 
 
 
-                         //$PatientData = mysqli_fetch_assoc($queryPatientRes);
-
-                        //register the following values into the user table
+                        //register the following values into the prescrption table
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
-                        $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$healthcard', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
+                        $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
                         mysqli_query($conn, $queryRes);
                         header("Location: viewPatientDetails.php");
                         exit;
+                    }else{
+                        $message = "Error in submitting data";
                     }
 
 
                 }
-
- 
-/*                 if(mysqli_num_rows($CondQueryRes) <= 0){
-                      //echo "Gov. Health card already exists, try again.";
-                      $message = "Drug does not exist, try again.";
-                }
-                else{
-                    if((mysqli_num_rows($CondQueryRes2) > 0) || (mysqli_num_rows($CondQueryRes3) > 0)){
-                        if (mysqli_num_rows($queryPatientRes) > 0) {
-                            //$PatientData = mysqli_fetch_assoc($queryPatientRes);
-
-                            //register the following values into the user table
-                            $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$healthcard', '$pharmLicNum', '$pharmID', '$docLicNum', '$prescibeName', '$DINum', '$rxNum', '$fillStatus', '$recDate', '$instruct', '$lastFillDate', '$lastFillQuantity')";
-                            //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
-                            mysqli_query($conn, $queryRes);
-
-                            header("Location: viewPatientDetails.php");
-                            exit;
-                        }
-                        else{
-                            $message = "Patient does not exist, try again.";
-                        }
-                    }
-                    else {
-                        //echo "userID does not exist, try again.";
-                        $message = "Prescriber is not in the system, try again.";
-                    }
-                }  */
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
@@ -222,11 +187,8 @@ session_start();
             <div id="formbox">
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Registration</div>
-                            <p><?php echo $message?></p>
-                            //Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved,
-                            //Instruction, Date_Last_Filled, Amount_Last_Filled
-                            // pharmLicNum, pharmID, docLicNum, prescibeName, DINum, rxNum, fillStatus, recDate, instruct, lastFillDate, lastFillQuantity
-                            <p>
+                            <p><?php echo $pharmLicNum, 'Presecription for patient with health card number: ', $patientHealthCardNum?></p>
+<!--                             <p>
                                 <label>Health Care Card Number:</label>
                                 <input type="text" id="textbox" name="healthcard"/>
                             </p>
@@ -237,6 +199,13 @@ session_start();
                             <p>
                                 <label>Pharmacist ID:</label>
                                 <input type="text" id="textbox" name="pharmID"/>
+                            </p> -->                            <p>
+                            <label>Prescription Number:</label>
+                                <input type="text" id="textbox" name="rxNum"/>
+                            </p>
+                            <p>
+                                <label>Drug Identification Number DIN:</label>
+                                <input type="text" id="textbox" name="DINum"/>
                             </p>
                             <p>
                                 <label>Doctor License Number:</label>
@@ -246,14 +215,8 @@ session_start();
                                 <label>Prescriber Name :</label>
                                 <input type="text" id="textbox" name="prescibeName"/>
                             </p>
-                            <p>
-                                <label>Drug Identification Number DIN:</label>
-                                <input type="text" id="textbox" name="DINum"/>
-                            </p>
-                            <p>
-                                <label>Prescription Number:</label>
-                                <input type="text" id="textbox" name="rxNum"/>
-                            </p>
+                            
+
                             <p>
                                 <label>Fill Status :</label>
                                 <select name="fillStatus">
