@@ -80,7 +80,7 @@
                 <label>Edit:</label>
                 <select name="edit">
                     <option value="<?php echo "PProf".$patientHealthCardNum;?>">Patient Profile</option>
-                    <option value="<?php echo "Depend".$patientHealthCardNum;?>">Dependent</option>
+                    <option value="<?php echo "Depen".$patientHealthCardNum;?>">Dependent</option>
                     <option value="<?php echo "Insur".$patientHealthCardNum;?>">Insurance</option>
                     <option value="<?php echo "DrugP".$patientHealthCardNum;?>">Drug Prescription</option>
                     <option value="<?php echo "Aller".$patientHealthCardNum;?>">Allergies</option>
@@ -102,30 +102,36 @@
     if (isset($_POST['editButton'])) {
         $optionSelected = substr(($_POST['edit']),0,5);
         $hcNum = substr(($_POST['edit']),5);
+
         if($optionSelected == "PProf"){
             //set session variables for the property that was clicked
-            $_SESSION['HC'] = $hcNum;
             // then redirect to viewProperty page
+            $_SESSION['HC'] = $hcNum;
             header("Location: editPatientProfile.php");
-            exit;  
+            die;
         }
-        if($optionSelected == "Depend"){
-            //set session variables for the property that was clicked
+        if($optionSelected == "Depen"){
             $_SESSION['HC'] = $hcNum;
-            // then redirect to viewProperty page
-            header("Location: editDependentDetails.php");
-            exit;
+            $checkerSQL = "select * from dependent where Parent_HealthCard_Num = '$hcNum'";
+            $CondQueryChecker = mysqli_query($conn, $checkerSQL);
+            
+            if(mysqli_num_rows($CondQueryChecker) <= 0){
+                header("Location: addDependentDetails.php");
+                die;  
+            } 
+            else {
+                header("Location: editDependentDetails.php");
+                die;
+            }
         }
         if($optionSelected == "Insur"){
             //set session variables for the property that was clicked
-            $_SESSION['HC'] = $hcNum;
             // then redirect to viewProperty page
             header("Location: editInsuranceDetails.php");
             exit;
         }
         if($optionSelected == "Aller"){
             //set session variables for the property that was clicked
-            $_SESSION['HC'] = $hcNum;
             // then redirect to viewProperty page
             header("Location: editAllergyDetails.php");
             exit;

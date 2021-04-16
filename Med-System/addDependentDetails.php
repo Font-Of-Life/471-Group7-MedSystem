@@ -14,7 +14,6 @@
         // collect data from the post variables in the html section below
 		$First_Name = $_POST['First_Name'];
         $Last_Name = $_POST['Last_Name'];
-        //$Parent_HealthCard_Num = $_POST['Parent_HealthCard_Num'];
         $Relationship = $_POST['Relationship'];
 
         $message = "";
@@ -25,21 +24,16 @@
                 $conditionalQuery = "select * from dependent where Parent_HealthCard_Num = '$healthcard'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
 
-                if(mysqli_num_rows($CondQueryRes) > 0){
-                    //reference used for updating values in SQL: https://www.tutorialrepublic.com/php-tutorial/php-mysql-update-query.php
-                    //Reference used for prepare statements in PHP: https://www.tutorialrepublic.com/php-tutorial/php-mysql-prepared-statements.php
-                    //reference used for updating SQL Database with check statements: https://www.wdb24.com/php-mysqli-procedural-prepared-statements-beginners/
-                    $sqlQuery = "UPDATE `dependent` SET `First_Name` = '$First_Name', `Last_Name` = '$Last_Name', `Relationship` = '$Relationship' WHERE `dependent`.`Parent_HealthCard_Num` = '$healthcard'";
-                    //$sqlQuery = "UPDATE `patient_profile` SET `Weight` = ?, `Height` = ?, `Address` = ?, `Provider_Notes` = ?, `Email` = ?, `COVID_Test_Result` = $covidStat, `Phone` = $phone, WHERE `patient_profile`.`Gov_HealthCard_Num` = $healthcard";
-                    mysqli_query($conn, $sqlQuery);
-                    $_SESSION['Gov_HealthCard_Num'] = $healthcard;
-                    header("Location: viewPatientDetails.php");
-                    exit;
-                }
-                else{
-                    //echo "Gov. Health card already exists, try again.";
-                    $message = "Info could not be updated. Patient not found in database.";
-                }
+                //reference used for updating values in SQL: https://www.tutorialrepublic.com/php-tutorial/php-mysql-update-query.php
+                //Reference used for prepare statements in PHP: https://www.tutorialrepublic.com/php-tutorial/php-mysql-prepared-statements.php
+                //reference used for updating SQL Database with check statements: https://www.wdb24.com/php-mysqli-procedural-prepared-statements-beginners/
+                //$queryRes = "insert into patient_profile (Gov_HealthCard_Num, First_Name, Last_Name, COVID_Test_Result, Weight, Height, Preferred_Language, Sex, Phone_Number, Address, Provider_Notes, Email, Day_Of_Birth, UserID) values ('$healthcardnum','$firstName','$lastName', '$covidStat', '$weight', '$height', '$prefLanguage', '$sex', '$phone', '$address','$providerNotes', '$email','$birthday','$techid')";
+                   
+                $sqlQuery = "insert into `dependent` (First_Name, Last_Name, Parent_HealthCard_Num, Relationship) values ('$First_Name','$Last_Name','$healthcard','$Relationship')";
+                mysqli_query($conn, $sqlQuery);
+                $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+                header("Location: viewPatientDetails.php");
+                exit;
             }
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
@@ -55,7 +49,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Dependent Edit</title>
+        <title>Patient Dependent Add</title>
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
     </head>
     <style>
@@ -138,7 +132,7 @@
             <a href="patientSearch.php">Search Patient Profile</a>
         </div>
             <div id="formbox">
-                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Edit</div>
+                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Add Patient <?php echo $healthcard?> Dependent:</div>
                     <p><?php echo $message?></p>
                     <form method="post">
                             <p>
