@@ -7,12 +7,16 @@
 
     $userDataSessions = isLoggedIn($conn);
     $drugDIN = $_SESSION['Gov_HealthCard_Num'];
+    if($drugDIN == NULL){
+        $drugDIN = $_GET['Gov_HealthCard_Num'];
+    }
+    
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Details</title>
+        <title>Patient Prescriptions</title>
         <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -52,14 +56,12 @@
             <a href="registerPatient.php">Add Patient Profile</a>
             <a href="drugSearch.php">Drug Search</a>
             <a href="registerDrug.php">Add Drug Profile</a>
-        </div>
-        <div>
-            <center><h1>Drug <?php echo $patientHealthCardNum?></h1></center>
-        </div>
-        <div>
-        <form>
             <a href="registerPrescriptions.php">Add Prescriptions</a>
-        </form>
+        </div>
+        <div>
+            <center><h1>Patient <?php echo $drugDIN?> Prescription: </h1></center>
+        </div>
+        <div>
 
     </div>
     </body>
@@ -113,6 +115,6 @@
     } 
     else {
         //else this means the patient has no current drug prescriptions, so displays that message to the html
-        echo "<p>No Drug Prescriptions.</p>";
+        echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Drug Prescriptions.</p>";
     }
 ?>

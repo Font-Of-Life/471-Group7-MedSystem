@@ -69,7 +69,7 @@
             <a href="index.php">Home</a>
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
-            <a href="viewPrescriptionDetails.php">View Patient Prescriptions</a>
+            <a href="<?php echo "viewPrescriptionDetails.php?Gov_HealthCard_Num=".urlencode($patientHealthCardNum)?>">View Patient Prescriptions</a>
             <a href="viewDependentsDetails.php">View Patient Dependents</a>
             <a href="viewAllergyDetails.php">View Patient Allergies</a>
             <a href="viewInsuranceDetails.php">View Insurance Details</a>
