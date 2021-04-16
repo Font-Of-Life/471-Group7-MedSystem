@@ -57,6 +57,24 @@
         body{
             background-color: lightgrey;
         }
+
+        #buttonStuff{
+            margin-left: 10px;
+            background-color: #0BDA51;
+            color: black;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+        }
     </style>
 
     <body>
@@ -79,13 +97,10 @@
                 <br>
             </div>
 
-            <div>
+            <div id="formbox">
                 <label>Drug Search: </label>
                 <input type="text" name ="searchDrug" placeholder="enter Drug Identification Number (DIN)."/>
-            </div>
-
-            <div>
-                <input type="submit" name="submit" value="Search"/>
+                <input id="buttonStuff" type="submit" name="submit" value="Search"/>
             </div>
 
         </form>
@@ -141,17 +156,15 @@
             }
             //else this means no data was found in the database so it displays the message to the page.
             else {
-                echo "No Data in database about this category at the moment.";
+                echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
                 //$message = "No Data in database about this category at the moment.";
             }
         }
         else if(is_numeric($drugSearch)) {
             //if it is, gets all the columns in the query patient_profile where Gov_Health_Num result is the same as the value in patientSearch
-            //prepare statements to prevent sql injection
-            $stmt = $conn->prepare('SELECT * FROM drug_profile WHERE DIN = ?');
-            $stmt->bind_param('i', $drugSearch); // 'i' specifies the variable type => 'integer'
-            $stmt->execute();
-            $queryResult = $stmt->get_result();
+            $queryRes = "select * from drug_profile where DIN = '$drugSearch'";
+            //gets the query and saves it into the variable queryResult
+            $queryResult = mysqli_query($conn,$queryRes);
 
             if(mysqli_num_rows($queryResult) > 0){
                 ?>
@@ -184,12 +197,12 @@
             }
             //if nothing is returned that means the user does not exist in the database, so display a message to the user about it
             else {
-                echo "User not found in the database.";
+                echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database.</p>";
                 //$message = "User not found in the database.";
             }
         }
         else {
-            echo "Drug search only works for numerical values, please give the DIN and try again.";
+            echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Drug search only works for numerical values, please give the DIN and try again.</p>";
             //$message = "Patient search only works for numerical values, try again.";
         }
     ?>
