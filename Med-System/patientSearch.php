@@ -14,9 +14,9 @@
     //isLoggedIn is a function defined LoginChecker.php as mentioned above, where the connection to the database is registered as $conn
     $userSessionData = isLoggedIn($conn);
 
-    if (isset($_POST['details'])) {
+    if (isset($_GET['details'])) {
 		//set session variables for the property that was clicked
-		$_SESSION['Gov_HealthCard_Num'] = $_POST['details'];
+		$_SESSION['Gov_HealthCard_Num'] = $_GET['details'];
 		// then redirect to viewProperty page
 		header("Location: viewPatientDetails.php");
 		die;
@@ -108,7 +108,7 @@
             <a href="registerDrug.php">Add Drug Profile</a>
         </div>
         
-        <form method="post">
+        <form method="get">
             
             <div>
                 <h2><center>Patient Profiles: </center></h2>
@@ -129,13 +129,13 @@
             </div>
         </form>
         <br>
-    <form method="post" action="">
+    <form method="get" action="">
         <?php
         $message="";
         //get information from the following text fields on the html after pressing the search button
-        if($_SERVER['REQUEST_METHOD'] == "POST"){
-            $covidStat = $_POST['covidstat'];
-            $patientSearch = $_POST['searchfor'];
+        if($_SERVER['REQUEST_METHOD'] == "GET"){
+            $covidStat = $_GET['covidstat'];
+            $patientSearch = $_GET['searchfor'];
         }
 
         //if the $covidStat is null, meaning the page has first loaded up, set it to All Automatically.
