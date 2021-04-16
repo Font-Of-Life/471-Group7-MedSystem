@@ -243,7 +243,7 @@
         else{
             //finds all the rows in the patient_profile table where the COVID_Test_Result is the same as the value in the variable covidStat
             $stmt = $conn->prepare('SELECT * FROM patient_profile WHERE COVID_Test_Result = ?');
-            $stmt->bind_param('i', $covidStat); // 'i' specifies the variable type => 'integer'
+            $stmt->bind_param('s', $covidStat); // 's' specifies the variable type => 'stringS'
             $stmt->execute();
             $queryResult = $stmt->get_result();
             
