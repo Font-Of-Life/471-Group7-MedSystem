@@ -37,8 +37,11 @@
                     exit;
                 }
                 else{
-                    //echo "Gov. Health card already exists, try again.";
-                    $message = "Info could not be updated. Patient not found in database.";
+                    $sqlQuery = "insert into `dependent` (First_Name, Last_Name, Parent_HealthCard_Num, Relationship) values ('$First_Name','$Last_Name','$healthcard','$Relationship')";
+                    mysqli_query($conn, $sqlQuery);
+                    $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+                    header("Location: viewPatientDetails.php");
+                    exit;
                 }
             }
             else {
@@ -138,7 +141,7 @@
             <a href="patientSearch.php">Search Patient Profile</a>
         </div>
             <div id="formbox">
-                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Edit</div>
+                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Dependent Edit</div>
                     <p><?php echo $message?></p>
                     <form method="post">
                             <p>

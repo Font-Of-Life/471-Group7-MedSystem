@@ -32,23 +32,13 @@
                 $_SESSION['Gov_HealthCard_Num'] = $healthcard;
                 header("Location: viewPatientDetails.php");
                 exit;
-                /* if($check = mysqli_prepare($conn, $sqlQuery)){
-                    mysqli_stmt_bind_param($check, "sssss", $weight, $height, $address, $providerNotes, $email);
-                    mysqli_stmt_execute($check);
-
-                    mysqli_query($conn, $sqlQuery);
-                    $_SESSION['Gov_HealthCard_Num'] = $healthcard;
-                    header("Location: viewPatientDetails.php");
-                    exit;
-
-                } else {
-                    $message = "Invalid input try again.";
-                } */
-
             }
             else{
-                //echo "Gov. Health card already exists, try again.";
-                $message = "Info could not be updated. Patient not found in database.";
+                $sqlQuery = "insert into `can_have` (Ingredient_Name, Gov_HealthCard_Num) values ('$Ingredient_Name','$healthcard')";
+                mysqli_query($conn, $sqlQuery);
+                $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+                header("Location: viewPatientDetails.php");
+                exit;
             }
         } 
         else {
@@ -61,7 +51,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Edit</title>
+        <title>Patient Allergy Edit</title>
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
     </head>
     <style>
@@ -144,7 +134,7 @@
             <a href="patientSearch.php">Search Patient Profile</a>
         </div>
             <div id="formbox">
-                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Edit</div>
+                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Allergy Edit:</div>
                     <p><?php echo $message?></p>
                     <form method="post">
                             <p>

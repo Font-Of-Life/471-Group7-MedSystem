@@ -103,34 +103,23 @@
         $optionSelected = substr(($_POST['edit']),0,5);
         $hcNum = substr(($_POST['edit']),5);
 
+        $_SESSION['HC'] = $hcNum;
         if($optionSelected == "PProf"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
-            $_SESSION['HC'] = $hcNum;
             header("Location: editPatientProfile.php");
             die;
         }
-        if($optionSelected == "Depen"){
-            $_SESSION['HC'] = $hcNum;
-            $checkerSQL = "select * from dependent where Parent_HealthCard_Num = '$hcNum'";
-            $CondQueryChecker = mysqli_query($conn, $checkerSQL);
-            
-            if(mysqli_num_rows($CondQueryChecker) <= 0){
-                header("Location: addDependentDetails.php");
-                die;  
-            } 
-            else {
-                header("Location: editDependentDetails.php");
-                die;
-            }
+        else if($optionSelected == "Depen"){
+            header("Location: editDependentDetails.php");
         }
-        if($optionSelected == "Insur"){
+        else if($optionSelected == "Insur"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
             header("Location: editInsuranceDetails.php");
-            exit;
+
         }
-        if($optionSelected == "Aller"){
+        else if($optionSelected == "Aller"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
             header("Location: editAllergyDetails.php");
@@ -138,16 +127,6 @@
         }
 		
     }
-    /* if(['edit'] == 'POST'){
-        echo $_POST['editButton'];
-        if($_POST['editButton'] == "PatientProfile"){
-            //set session variables for the property that was clicked
-            $_SESSION['Gov_HealthCard_Num'] = $patientHealthCardNum;
-            // then redirect to viewProperty page
-            header("Location: editPatientProfile.php");
-            exit;  
-        }
-    } */
     //gets the query data from the sql database of the current selected patient in the patient profile table 
     $queryPatientGet = "select * from patient_profile where Gov_HealthCard_Num = '$patientHealthCardNum'";
     $queryPatientRes = mysqli_query($conn, $queryPatientGet);

@@ -21,7 +21,7 @@
         $message = "";
 
         // if not empty and it is valid, then do the following
-        if (!empty($Policy_Number)) {
+        if (!empty($Policy_Number) && !empty($Company) && !empty($Start_Date) && !empty($End_Date)) {
             if(is_numeric($Policy_Number)){
                 $conditionalQuery = "select * from insurance_plan where Policy_Holder_Health_Num = '$healthcard'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
@@ -36,28 +36,19 @@
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
                     header("Location: viewPatientDetails.php");
                     exit;
-                    /* if($check = mysqli_prepare($conn, $sqlQuery)){
-                        mysqli_stmt_bind_param($check, "sssss", $weight, $height, $address, $providerNotes, $email);
-                        mysqli_stmt_execute($check);
-
-                        mysqli_query($conn, $sqlQuery);
-                        $_SESSION['Gov_HealthCard_Num'] = $healthcard;
-                        header("Location: viewPatientDetails.php");
-                        exit;
-
-                    } else {
-                        $message = "Invalid input try again.";
-                    } */
 
                 }
                 else{
-                    //echo "Gov. Health card already exists, try again.";
-                    $message = "Info could not be updated. Patient not found in database.";
+                    $sqlQuery = "insert into `insurance_plan` (Policy_Number, Policy_Holder_Health_Num, Company, Start_Date, End_Date) values ('$Policy_Number','$healthcard','$Company','$Start_Date', '$End_Date')";
+                    mysqli_query($conn, $sqlQuery);
+                    $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+                    header("Location: viewPatientDetails.php");
+                    exit;
                 }
             }
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
-                $message = "Phone number is not numerical values, try again.";
+                $message = "Policy num is not a number.";
             }
         } 
         else {
@@ -70,7 +61,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Edit</title>
+        <title>Patient Insurance Edit</title>
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
     </head>
     <style>
@@ -153,7 +144,7 @@
             <a href="patientSearch.php">Search Patient Profile</a>
         </div>
             <div id="formbox">
-                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Edit</div>
+                    <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Insurance Edit</div>
                     <p><?php echo $message?></p>
                     <form method="post">
                             <p>
