@@ -242,9 +242,11 @@
         //else this means that the user chose either Positve, Negative, Or Pending for covid Status dropdown menu bar
         else{
             //finds all the rows in the patient_profile table where the COVID_Test_Result is the same as the value in the variable covidStat
-            $queryRes = "select * from patient_profile where COVID_Test_Result = '$covidStat'";
-            //get all the data from the patient profile in the database with those conditions in queryRes and saves it to the variable queryResult
-            $queryResult = mysqli_query($conn,$queryRes);
+            $stmt = $conn->prepare('SELECT * FROM patient_profile WHERE COVID_Test_Result = ?');
+            $stmt->bind_param('i', $covidStat); // 'i' specifies the variable type => 'integer'
+            $stmt->execute();
+            $queryResult = $stmt->get_result();
+            
 
             //checks to see if the patientSearch text/input field is empty
             if($patientSearch == NULL){
