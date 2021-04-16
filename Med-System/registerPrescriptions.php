@@ -122,6 +122,7 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
+            margin-bottom: 20px;
         }
 
         .navigationBar a{

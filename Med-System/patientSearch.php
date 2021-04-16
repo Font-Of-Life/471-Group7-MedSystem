@@ -115,7 +115,7 @@
                 <p><center>HC# = Government Health Card Number</center></p>
                 <br>
             </div>
-            <div>
+            <div id = "formbox">
                 <label>Select COVID Status:</label>
                 <select name="covidstat">
                     <option value="All">All</option>
@@ -123,17 +123,10 @@
                     <option value="Negative">Negative</option>
                     <option value="Positive">Positive</option>
                 </select>
-            </div>
-
-            <div>
                 <label>Patient Search: </label>
                 <input type="text" name ="searchfor" placeholder="enter health card number."/>
+                <input type="submit" name="submit" id="buttonStuff" value="Search"/>
             </div>
-
-            <div>
-                <input type="submit" name="submit" value="Search"/>
-            </div>
-
         </form>
         <br>
     <form method="post" action="">
@@ -190,7 +183,7 @@
                 }
                 //else this means no data was found in the database so it displays the message to the page. 
                 else {
-                    echo "No Data in database about this category at the moment.";
+                    echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
                     //$message = "No Data in database about this category at the moment.";
                 }
             }
@@ -233,13 +226,13 @@
                 } 
                 //if nothing is returned that means the user does not exist in the database, so display a message to the user about it
                 else {
-                    echo "User not found in the database.";
+                    echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database.</p>";
                     //$message = "User not found in the database.";
                 }
             } 
             //else if the patientsearch isnt numerical that means it is a string, and we dont allow it so we display a message to the user about it
             else {
-                echo "Patient search only works for numerical values, try again.";
+                echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Patient search only works for numerical values, try again.</p>";
                 //$message = "Patient search only works for numerical values, try again.";
             }
         }
@@ -285,7 +278,7 @@
                 //else this means there are no patients/data in the database with that information, so prints a message to the user about it
                 else {
                     //echo "No Data in database about this category at the moment.";
-                    $message = "No Data in database about this category at the moment.";
+                    echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
                 }
             } 
             //else this means the field in the patientSearch input text field isnt empty, so checks if it is a number
@@ -326,14 +319,14 @@
                 //else this means that there is no user with that government health card number in the database with that covid status, so display a message to the user about it. 
                 else {
                     //echo "User not found in the database of this COVID category.";
-                    $message = "User not found in the database of this COVID category.";
+                    echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database of this COVID category.</p>";
                     
                 }
             }
             //else this means the text field for patient Search input was a string, and that search input only allows integers so display a message to the user about it. 
             else {
                 //echo "Patient search only works for numerical values, try again.";
-                $message = "Patient search only works for numerical values, try again.";
+                echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Patient search only works for numerical values, try again.</p>";
             }
         }
     ?>

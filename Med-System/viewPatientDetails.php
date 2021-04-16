@@ -40,6 +40,25 @@
         body{
             background-color: lightgrey;
         }
+
+        #buttonStuff{
+            margin-left: 10px;
+            background-color: #0BDA51;
+            color: black;
+            font-size: 14px;
+            
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+        }
     </style>
     <body>
         <div class="titleClass">
@@ -50,6 +69,10 @@
             <a href="index.php">Home</a>
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
+            <a href="viewPrescriptionDetails.php">View Patient Prescriptions</a>
+            <a href="viewDependentsDetails.php">View Patient Dependents</a>
+            <a href="viewAllergyDetails.php">View Patient Allergies</a>
+            <a href="viewInsuranceDetails.php">View Insurance Details</a>
         </div>
 
         <div id="formbox">
@@ -65,13 +88,11 @@
 
                 <input id = "buttonStuff" type="submit" name="editButton" value="Edit">
 
-                <a href="viewPrescriptionDetails.php">View Patient Prescriptions</a>
-                <a href="viewDependentsDetails.php">View Patient Dependents</a>
-                <a href="viewAllergyDetails.php">View Patient Allergies</a>
-                <a href="viewInsuranceDetails.php">View Insurance Details</a>
+                
             </form>
             
         </div>
+        <h1 style="text-align: center;">Patient <?echo $patientHealthCardNum?> Details:</h1>
     </body>
 </html>
 
