@@ -90,15 +90,16 @@
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
         </div>
+        <!--The following div class section is used to get the edit information to select which option it goes to-->
         <div id="formbox">
             <form method="post" action="">
                 <label>Edit:</label>
                 <select name="edit">
-                    <option value="PatientProfile">Patient Profile</option>
-                    <option value="Dependent">Dependent</option>
-                    <option value="Insurance">Insurance</option>
-                    <option value="DrugPres">Drug Prescription</option>
-                    <option value="Allergies">Allergies</option>
+                    <option value="<?php echo "PProf".$patientHealthCardNum;?>">Patient Profile</option>
+                    <option value="<?php echo "Depend".$patientHealthCardNum;?>">Dependent</option>
+                    <option value="<?php echo "Insur".$patientHealthCardNum;?>">Insurance</option>
+                    <option value="<?php echo "DrugP".$patientHealthCardNum;?>">Drug Prescription</option>
+                    <option value="<?php echo "Aller".$patientHealthCardNum;?>">Allergies</option>
                 </select>
                 <input id = "buttonStuff" type="submit" name="editButton" value="Edit">
             </form>
@@ -114,9 +115,11 @@
     //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
     //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
     if (isset($_POST['editButton'])) {
-        if($_POST['edit'] == "PatientProfile"){
+        $optionSelected = substr(($_POST['edit']),0,5);
+        $hcNum = substr(($_POST['edit']),5);
+        if($optionSelected == "PProf"){
             //set session variables for the property that was clicked
-            $_SESSION['Gov_HealthCard_Num'] = $_POST['edit'];
+            $_SESSION['HC'] = $hcNum;
             // then redirect to viewProperty page
             header("Location: editPatientProfile.php");
             exit;  
@@ -188,7 +191,7 @@
         echo "<p style='text-align: center;  font-size: 16px;'>Patient Health Card Number: $healthcard</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Patient Name: $name</p>";
         //reference for text outline/shadow for COVID Status: https://stackoverflow.com/questions/4919076/outline-effect-to-text
-        echo "<p style='text-align: center; font-weight: bold; font-size: 16px; color:$color; text-weight: bold; text-shadow: -1px -1px 0 #000, 0.8px -1px 0 #000, -1px 0.8px 0 #000, 0.8px 0.8px 0 #000;'> COVID Status: $covidStat</p>";
+        echo "<p style='text-align: center; font-weight: bold; font-size: 16px; color:$color; text-weight: bold; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;'> COVID Status: $covidStat</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Sex: $sex</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Birthday: $birthday</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Weight: $weight</p>";
