@@ -7,7 +7,6 @@
 
     $userDataSessions = isLoggedIn($conn);
     $patientHealthCardNum1 = isset($_GET['govID']) ? mysqli_real_escape_string($conn, $_GET['govID']) :  "";
-    $get_data_query = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
 ?>
