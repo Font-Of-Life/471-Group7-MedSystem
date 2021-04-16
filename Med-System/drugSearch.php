@@ -14,6 +14,7 @@
     //isLoggedIn is a function defined LoginChecker.php as mentioned above, where the connection to the database is registered as $conn
     $userSessionData = isLoggedIn($conn);
 
+
     if (isset($_POST['details'])) {
 		//set session variables for the property that was clicked
 		$_SESSION['DIN'] = $_POST['details'];

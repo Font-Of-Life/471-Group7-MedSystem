@@ -16,11 +16,11 @@
 
     //send get request
     if (isset($_GET['details'])) {
-        //set session variables for the property that was clicked
-        $_SESSION['Gov_HealthCard_Num'] = $_GET['details'];
-        // redirect to viewProperty page
-        header("Location: viewPatientDetails.php?govID=". $_GET['details']);
-        die;
+		//set session variables for the property that was clicked
+		$_SESSION['Gov_HealthCard_Num'] = $_GET['details'];
+		// redirect to viewProperty page
+		header("Location: viewPatientDetails.php?govID=". $_GET['details']);
+		die;
     }
 ?>
 

@@ -5,6 +5,8 @@
     include("connections.php");
     include("LoginChecker.php");
 
+    $userDataSessions = isLoggedIn($conn);
+
     //get request
     $patientHealthCardNum = isset($_GET['govID']) ? mysqli_real_escape_string($conn, $_GET['govID']) :  "";
 
@@ -129,8 +131,10 @@
 		
     }
     //gets the query data from the sql database of the current selected patient in the patient profile table 
-    $queryPatientGet = "select * from patient_profile where Gov_HealthCard_Num = '$patientHealthCardNum'";
-    $queryPatientRes = mysqli_query($conn, $queryPatientGet);
+    $stmt = $conn->prepare('SELECT * FROM patient_profile WHERE Gov_HealthCard_Num = ?');
+    $stmt->bind_param('i', $patientHealthCardNum); // 'i' specifies the variable type => 'integer'
+    $stmt->execute();
+    $queryPatientRes = $stmt->get_result();
 
     //checks to see if the query returned is not empty
     if(mysqli_num_rows($queryPatientRes) > 0){

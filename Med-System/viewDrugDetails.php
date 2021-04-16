@@ -7,6 +7,10 @@
 
     $userDataSessions = isLoggedIn($conn);
     $drugDIN = $_SESSION['DIN'];
+    if($drugDIN == NULL){
+        $drugDIN = isset($_GET['din']) ? mysqli_real_escape_string($conn, $_GET['din']) :  "";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -71,8 +75,10 @@
         }
     } */
     //gets the query data from the sql database of the current selected drug in the drug profile table
-    $queryDrugGet = "select * from drug_profile where DIN = '$drugDIN'";
-    $queryDrugRes = mysqli_query($conn, $queryDrugGet);
+    $stmt = $conn->prepare('SELECT * FROM drug_profile WHERE DIN = ?');
+    $stmt->bind_param('i', $drugDIN); // 'i' specifies the variable type => 'integer'
+    $stmt->execute();
+    $queryDrugRes = $stmt->get_result();
 
     //checks to see if the query returned is not empty
     if(mysqli_num_rows($queryDrugRes) > 0){
