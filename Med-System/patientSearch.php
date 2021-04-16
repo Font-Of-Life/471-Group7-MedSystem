@@ -14,12 +14,13 @@
     //isLoggedIn is a function defined LoginChecker.php as mentioned above, where the connection to the database is registered as $conn
     $userSessionData = isLoggedIn($conn);
 
+    //send get request
     if (isset($_GET['details'])) {
-		//set session variables for the property that was clicked
-		$_SESSION['Gov_HealthCard_Num'] = $_GET['details'];
-		// then redirect to viewProperty page
-		header("Location: viewPatientDetails.php");
-		die;
+        //set session variables for the property that was clicked
+        $_SESSION['Gov_HealthCard_Num'] = $_GET['details'];
+        // redirect to viewProperty page
+        header("Location: viewPatientDetails.php?govID=". $_GET['details']);
+        die;
     }
 ?>
 

@@ -5,11 +5,9 @@
     include("connections.php");
     include("LoginChecker.php");
 
-    $userDataSessions = isLoggedIn($conn);
-    $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
-    if($patientHealthCardNum == NULL){
-        $patientHealthCardNum = $_GET['Gov_HealthCard_Num'];
-    }
+    //get request
+    $patientHealthCardNum = isset($_GET['govID']) ? mysqli_real_escape_string($conn, $_GET['govID']) :  "";
+
 ?>
 
 <!DOCTYPE html>
