@@ -28,13 +28,20 @@ session_start();
 
                     //the following is used to check if the current values are in the database already
                     //conditionalQuery is the query commands used to retrieve the values in the user table with the same values of UserID as pharmid
-                    $conditionalQuery = "select * from users where UserID = '$pharmid'";
-                    //retrieves the data from the command given in conditionalQuery from the SQL database
-                    $CondQueryRes = mysqli_query($conn, $conditionalQuery);
+                    $stmt = $conn->prepare('SELECT * FROM users WHERE UserID = ?');
+                    $stmt->bind_param('i', $pharmid); // 'i' specifies the variable type => 'integer'
+                    $stmt->execute();
+                    $CondQueryRes = $stmt->get_result();
+
+
+
                     //conditionalQuery2 is the query commands used to retrieve the values in the pharmacist table with the same values of PharmLicense_Num as pharmLicenseNum
-                    $conditionalQuery2 = "select * from pharmacist where PharmLicense_Num = '$pharmLicenseNum'";
+
+                    $stmt = $conn->prepare('SELECT * FROM pharmacist WHERE PharmLicense_Num = ?');
+                    $stmt->bind_param('i', $pharmLicenseNum); // 'i' specifies the variable type => 'integer'
+                    $stmt->execute();
                     //retrieves the data from the command given in conditionalQuery from the SQL database
-                    $CondQueryRes2 = mysqli_query($conn, $conditionalQuery2);
+                    $CondQueryRes2 = $stmt->get_result();
 
                     //checks to see if the tables are not empty, if so that means they are not registered in the database
                     if(mysqli_num_rows($CondQueryRes2) <= 0 && mysqli_num_rows($CondQueryRes) <= 0){

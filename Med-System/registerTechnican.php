@@ -18,8 +18,11 @@ session_start();
         // if not empty and it is valid, then do the following
         if (!empty($techid) && !empty($phone) && !empty($firstName) && !empty($lastName) && !empty($password)) {
             if(is_numeric($phone) && is_numeric($techid)){
-                $conditionalQuery = "select * from users where UserID = '$techid'";
-                $CondQueryRes = mysqli_query($conn, $conditionalQuery);
+                //prepare statement and check for existsing userID
+                $stmt = $conn->prepare('SELECT * FROM users WHERE UserID = ?');
+                $stmt->bind_param('i', $techid); // 'i' specifies the variable type => 'integer'
+                $stmt->execute();
+                $CondQueryRes = $stmt->get_result();
                     
                 if(mysqli_num_rows($CondQueryRes) <= 0){
                     //register the following values into the user table
