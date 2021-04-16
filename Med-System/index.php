@@ -93,10 +93,9 @@
             <br>
             <p>What would you like to do?</p>
             <!--  List options to do the other stuff here  in div classes-->
-            <div id="buttonStuff"> <a href="patientSearch.php">Go to patient profiles</a> </div><br><br>
-            <div id="buttonStuff"> <a href="drugSearch.php">Go to drug profiles</a> </div><br><br>
-            <div id="buttonStuff"> Go to drug prescription </div><br><br>
-            <div id="buttonStuff"> <a href="LogOut.php">Log Out</a> </div><br><br>
+            <div id="buttonStuff"> <a href="patientSearch.php" style="text-weight: bold; color: black; font-size: 16px;">Go to patient profiles</a> </div><br><br>
+            <div id="buttonStuff"> <a href="drugSearch.php" style="text-weight: bold; color: black; font-size: 16px;">Go to drug profiles</a> </div><br><br>
+            <div id="buttonStuff"> <a href="LogOut.php" style="text-weight: bold; color: black; font-size: 16px;">Log Out</a> </div><br>
             
         </div>
         
