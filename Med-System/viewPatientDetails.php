@@ -6,6 +6,9 @@
     include("LoginChecker.php");
 
     $userDataSessions = isLoggedIn($conn);
+    $patientHealthCardNum1 = isset($_GET['govID']) ? mysqli_real_escape_string($conn, $_GET['govID']) :  "";
+    $get_data_query = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
 ?>
 
@@ -13,6 +16,7 @@
 <html>
     <head>
         <title>Patient Details</title>
+        <p><?php echo$patientHealthCardNum1?></p>
         <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
