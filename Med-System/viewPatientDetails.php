@@ -116,6 +116,13 @@
             header("Location: editDependentDetails.php");
             exit;
         }
+        if($optionSelected == "Insur"){
+            //set session variables for the property that was clicked
+            $_SESSION['HC'] = $hcNum;
+            // then redirect to viewProperty page
+            header("Location: editInsuranceDetails.php");
+            exit;
+        }
 		
     }
     /* if(['edit'] == 'POST'){
@@ -276,16 +283,19 @@
         //displays the insurance section of the patient
         echo "<h2 style='text-align: center;'>Insurance</h2>";
         //retrieves the data regarding the patient's insurance from the sql database
-        $getPatientInsurance = "select * from `insurance plan` where Policy_Holder_Health_Num ='$healthcard'";
+        $getPatientInsurance = "select * from `insurance_plan` where Policy_Holder_Health_Num ='$healthcard'";
         $insuranceQueryRes = mysqli_query($conn, $getPatientInsurance);
         
         //checks to see if the received table from the sql database is empty
-        if(mysqli_num_rows($insuranceQueryRes)>0){
+        if(mysqli_num_rows($insuranceQueryRes) > 0){
             //if it isnt saves the data from the table into the following variables
-            $policyNum = $insuranceQueryRes['Policy_Number'];
-            $InsCompanyName = $insuranceQueryRes['Company'];
-            $Start_Date = $insuranceQueryRes['Start_Date'];
-            $EndDate = $insuranceQueryRes['End_Date'];
+            $InsuranceData = mysqli_fetch_assoc($insuranceQueryRes);
+
+            $color="black";
+            $policyNum = $InsuranceData['Policy_Number'];
+            $InsCompanyName = $InsuranceData['Company'];
+            $Start_Date = $InsuranceData['Start_Date'];
+            $EndDate = $InsuranceData['End_Date'];
 
             //displays the information stored in each variable onto the html
             echo "<p style='text-align: center;  font-size: 16px;'>Insurance Policy Number: $policyNum</p>";

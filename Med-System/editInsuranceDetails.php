@@ -12,24 +12,25 @@
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // collect data from the post variables in the html section below
-		$First_Name = $_POST['First_Name'];
-        $Last_Name = $_POST['Last_Name'];
-        //$Parent_HealthCard_Num = $_POST['Parent_HealthCard_Num'];
-        $Relationship = $_POST['Relationship'];
+		$Policy_Number = $_POST['Policy_Number'];
+        //$Policy_Holder_Health_Num = $_POST['Policy_Holder_Health_Num'];
+        $Company = $_POST['Company'];
+        $Start_Date = $_POST['Start_Date'];
+        $End_Date = $_POST['End_Date'];
 
         $message = "";
 
         // if not empty and it is valid, then do the following
-        if (!empty($First_Name) && !empty($Last_Name) && !empty($Parent_HealthCard_Num) && !empty($Relationship)) {
-            if(is_numeric($Parent_HealthCard_Num)){
-                $conditionalQuery = "select * from dependent where Parent_HealthCard_Num = '$healthcard'";
+        if (!empty($Policy_Number)) {
+            if(is_numeric($Policy_Number)){
+                $conditionalQuery = "select * from insurance_plan where Policy_Holder_Health_Num = '$healthcard'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
 
                 if(mysqli_num_rows($CondQueryRes) > 0){
                     //reference used for updating values in SQL: https://www.tutorialrepublic.com/php-tutorial/php-mysql-update-query.php
                     //Reference used for prepare statements in PHP: https://www.tutorialrepublic.com/php-tutorial/php-mysql-prepared-statements.php
                     //reference used for updating SQL Database with check statements: https://www.wdb24.com/php-mysqli-procedural-prepared-statements-beginners/
-                    $sqlQuery = "UPDATE `dependent` SET `First_Name` = '$First_Name', `Last_Name` = '$Last_Name', `Relationship` = '$Relationship' WHERE `dependent`.`Parent_HealthCard_Num` = $healthcard";
+                    $sqlQuery = "UPDATE `insurance_plan` SET `Policy_Number` = '$Policy_Number', `Company` = '$Company', `Start_Date` = '$Start_Date', `End_Date` = '$End_Date' WHERE `insurance_plan`.`Policy_Holder_Health_Num` = $healthcard";
                     //$sqlQuery = "UPDATE `patient_profile` SET `Weight` = ?, `Height` = ?, `Address` = ?, `Provider_Notes` = ?, `Email` = ?, `COVID_Test_Result` = $covidStat, `Phone` = $phone, WHERE `patient_profile`.`Gov_HealthCard_Num` = $healthcard";
                     mysqli_query($conn, $sqlQuery);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
@@ -156,16 +157,20 @@
                     <p><?php echo $message?></p>
                     <form method="post">
                             <p>
-                                <label>First Name:</label>
-                                <input type="text" id="textbox" name="First_Name"/>
+                                <label>Policy_Number:</label>
+                                <input type="text" id="textbox" name="Policy_Number"/>
                             </p>
                             <p>
-                                <label>Last Name:</label>
-                                <input type="text" id="textbox" name="Last_Name"/>
+                                <label>Company:</label>
+                                <input type="text" id="textbox" name="Company"/>
                             </p>
                             <p>
-                                <label>Relationship:</label>
-                                <input type="text" id="textbox" name="Relationship"/>
+                                <label>Start Date:</label>
+                                <input type="text" id="textbox" name="Start_Date"/>
+                            </p>
+                            <p>
+                                <label>End Date:</label>
+                                <input type="text" id="textbox" name="End_Date"/>
                             </p>
 
                             <input id="buttonStuff" type="submit" value="Save Changes"/>
