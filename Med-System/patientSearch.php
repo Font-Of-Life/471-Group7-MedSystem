@@ -85,6 +85,7 @@
             <a href="LogOut.php">Log Out</a>
             <a href="index.php">Home</a>
             <a href="registerPatient.php">Add Patient Profile</a>
+            <a href="registerDrug.php">Add Drug Profile</a>
         </div>
         
         <form method="post">

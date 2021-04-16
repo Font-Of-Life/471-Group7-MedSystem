@@ -161,11 +161,11 @@
 
         //checks to see if the covid status of the current patient is positive, if it is save the value of lime to it.
         if($covidStat == "Positive"){
-            $color = "lime";
-        } 
+            $color = "red";
+        }
         //checks to see if the covid status of the current patient is negative, if it is save the value of red to it.
         else if($covidStat == "Negative"){
-            $color = "red";
+            $color = "lime";
         }
         //else it means it is pending, so save the value of yellow to it.
         else{
