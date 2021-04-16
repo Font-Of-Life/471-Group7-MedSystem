@@ -31,9 +31,9 @@ session_start();
 
         // if not empty and it is valid, then do the following
         //if (!empty($DINum) && !empty($drugName) && !empty($drugGenericName)) {//&& !empty($drugPackSize) && !empty($drugSellPrice) && !empty($drugBuyPrice) && !empty($drugInventory) && !empty($drugStrength) && !empty($drugCreation) && !empty($userid)) {
-        if (!empty($DINum)) {
+        if (!empty($DINum)&&!empty($patientHealthCardNum)&& !empty($rxNum)) {
             $message = "Passed first if statement";
-            if(is_numeric($DINum)) {//&& is_numeric($userid) && is_numeric($drugPackSize) && is_numeric($drugSellPrice) && is_numeric($drugBuyPrice) && is_numeric($drugInventory) && is_numeric($drugStrength)){
+            if(is_numeric($DINum)&&is_numeric($patientHealthCardNum)&&is_numeric($rxNum)) {//&& is_numeric($userid) && is_numeric($drugPackSize) && is_numeric($drugSellPrice) && is_numeric($drugBuyPrice) && is_numeric($drugInventory) && is_numeric($drugStrength)){
                 $conditionalQuery = "select * from drug_profile where DIN = '$DINum'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
 
@@ -46,7 +46,74 @@ session_start();
                 $conditionalQuery3 = "select * from doctor where Doctor_LicenseNum = '$docLicNum'";
                 $CondQueryRes3 = mysqli_query($conn, $conditionalQuery3);
 
-                if(mysqli_num_rows($CondQueryRes) <= 0){
+                $conditionalQuery4 = "select * from pharmacist where PharmID = '$pharmID'";
+                $CondQueryRes4 = mysqli_query($conn, $conditionalQuery4);
+
+                $conditionalQuery5 = "select * from prescriber where Prescriber_Name = '$prescibeName'";
+                $CondQueryRes5 = mysqli_query($conn, $conditionalQuery5);
+
+                $conditionalQuery6 = "select * from drug_prescription where RX_Number = '$rxNum'";
+                $CondQueryRes6 = mysqli_query($conn, $conditionalQuery6);
+
+
+                if(mysqli_num_rows($CondQueryRes6)>0){
+                    $message = "rx Number already exist, cannot add duplicate prescription";
+                }
+                else{
+                    $erro = 0;
+                    $message='';
+                    if(mysqli_num_rows($CondQueryRes) <= 0){
+                        $message .= "Drug does not exist, try again.\n";
+                        $error=1;
+                    }
+                    if((mysqli_num_rows($queryPatientRes) <= 0)){
+                        $message .= "Patient does not exist, try again.\n";
+                        $error=1;
+
+                    }
+
+                    if((!empty($pharmLicNum) && (mysqli_num_rows($CondQueryRes2) <= 0)) || (!empty($pharmID) && (mysqli_num_rows($CondQueryRes4) <= 0))){
+                        $message .= "Pharmacist does not exist, try again.\n";
+                        $error=1;
+
+                    }
+
+                    if((!empty($docLicNum) && (mysqli_num_rows($CondQueryRes3) <= 0))){
+                        $message .= "Doctor License number does not exist, try again.\n";
+                        $error=1;
+                    }
+                    if((!empty($prescibeName) && (mysqli_num_rows($CondQueryRes5) <= 0)) ){
+                        $message .= "Prescriber does not exist, try again.\n";
+                        $error=1;
+                    }
+
+                    if($error == 0){
+                        //Set to null if empty form
+                        $pharmLicNum = !empty($pharmLicNum) ? "'$pharmLicNum'" : "NULL";
+                        $pharmID = !empty($pharmID) ? "'$pharmID'" : "NULL";
+                        $docLicNum = !empty($docLicNum) ? "'$docLicNum'" : "NULL";
+                        $prescibeName = !empty($prescibeName) ? "'$prescibeName'" : "NULL";
+                        $recDate = !empty($recDate) ? "'$recDate'" : "NULL";
+                        $lastFillDate = !empty($lastFillDate) ? "'$lastFillDate'" : "NULL";
+                        $lastFillQuantity = !empty($lastFillQuantity) ? "'$lastFillQuantity'" : "NULL";
+
+
+
+                         //$PatientData = mysqli_fetch_assoc($queryPatientRes);
+
+                        //register the following values into the user table
+                        //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
+                        $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$healthcard', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
+                        mysqli_query($conn, $queryRes);
+                        header("Location: viewPatientDetails.php");
+                        exit;
+                    }
+
+
+                }
+
+ 
+/*                 if(mysqli_num_rows($CondQueryRes) <= 0){
                       //echo "Gov. Health card already exists, try again.";
                       $message = "Drug does not exist, try again.";
                 }
@@ -71,16 +138,16 @@ session_start();
                         //echo "userID does not exist, try again.";
                         $message = "Prescriber is not in the system, try again.";
                     }
-                }
+                }  */
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
-                $message = "DIN, Pack Size, Sell Price, Buy Price, Inventory, Drud Schedule and Drug Strength were not numerical values, try again.";
+                $message = "Prescription Number, DIN, Health Care card Number were not numerical values, try again.";
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
-            $message = "The only empty fields allowed is Drug Image, try again.";
+            $message = "Prescription Number, DIN, Health Care card Number can't be empty";
         }
     }
 ?>
@@ -88,7 +155,7 @@ session_start();
 <!DOCTYPE html>
 <html>
     <head>
-            <title>Drug Registration</title>
+            <title>Prescription Registration</title>
             <link rel="stylesheet" href="style.css" type="text/css">
     </head>
 
@@ -122,7 +189,6 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
-            margin-bottom: 20px;
         }
 
         .navigationBar a{
@@ -155,7 +221,7 @@ session_start();
         </div>
             <div id="formbox">
                     <form method="post">
-                            <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Drug Registration</div>
+                            <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Registration</div>
                             <p><?php echo $message?></p>
                             //Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved,
                             //Instruction, Date_Last_Filled, Amount_Last_Filled
