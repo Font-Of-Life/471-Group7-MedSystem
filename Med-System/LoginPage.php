@@ -12,9 +12,11 @@
 
         //checks to see if the userid and password are valid and arent empty
         if(is_numeric($userid) && !empty($password)){
-            //unsure about this section, as userid should contain all userIds or no?
-            $DataQuery = "(select Password from users where UserID = '$userid') limit 1";
-            $QueryResult = mysqli_query($conn, $DataQuery);
+            //LOGIN, prepare statements to prevent sql injection
+            $stmt = $conn->prepare('(SELECT Password FROM users where UserID = ?) limit 1');
+            $stmt->bind_param('i', $userid); // 'i' specifies the variable type => 'integer'
+            $stmt->execute();
+            $QueryResult = $stmt->get_result();
 
             if($QueryResult && mysqli_num_rows($QueryResult) >= 1){
                 $userSessionData = mysqli_fetch_assoc($QueryResult);

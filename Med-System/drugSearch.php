@@ -147,9 +147,11 @@
         }
         else if(is_numeric($drugSearch)) {
             //if it is, gets all the columns in the query patient_profile where Gov_Health_Num result is the same as the value in patientSearch
-            $queryRes = "select * from drug_profile where DIN = '$drugSearch'";
-            //gets the query and saves it into the variable queryResult
-            $queryResult = mysqli_query($conn,$queryRes);
+            //prepare statements to prevent sql injection
+            $stmt = $conn->prepare('SELECT * FROM drug_profile WHERE DIN = ?');
+            $stmt->bind_param('i', $drugSearch); // 'i' specifies the variable type => 'integer'
+            $stmt->execute();
+            $queryResult = $stmt->get_result();
 
             if(mysqli_num_rows($queryResult) > 0){
                 ?>
