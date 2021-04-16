@@ -6,7 +6,7 @@
     include("LoginChecker.php");
 
     $userDataSessions = isLoggedIn($conn);
-    $drugDIN = $_SESSION['DIN'];
+    $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +56,13 @@
         <div>
             <center><h1>Drug <?php echo $drugDIN?></h1></center>
         </div>
+        <div>
+            <form>
+                <a href="viewPatientDetails.php">Back to Patient Profile</a>
+                <a href="registerAllergy.php">Add an Allergy Record</a>
+            </form>
+
+        </div>
     </body>
 </html>
 
@@ -71,59 +78,39 @@
         }
     } */
     //gets the query data from the sql database of the current selected drug in the drug profile table
-    $queryDrugGet = "select * from drug_profile where DIN = '$drugDIN'";
-    $queryDrugRes = mysqli_query($conn, $queryDrugGet);
+    $queryAllergyGet = "select * from can_have where Gov_HealthCard_Num = '$patientHealthCardNum'";
+    $queryAllergyRes = mysqli_query($conn, $queryAllergyGet);
 
     //checks to see if the query returned is not empty
-    if(mysqli_num_rows($queryDrugRes) > 0){
+    if(mysqli_num_rows($queryAllergyRes) > 0){
         //if it isnt, then it fetches the data on that patient retrieved from the sql database
-        $DrugData = mysqli_fetch_assoc($queryDrugRes);
+        $AllergyData = mysqli_fetch_assoc($queryAllergyRes);
         
         //reference:
         //php printing stuff: https://code-boxx.com/display-php-variables-in-html/
         
         //saving the following things into variables from the sql database
         $color="black";
-        $DINum = $DrugData['DIN'];
-        $drugName = $DrugData['Drug_Name'];
-        $drugGenericName = $DrugData['Drug_Generic_Name'];
-        $drugPackSize = $DrugData['Pack_Size'];
-        $drugSellPrice = $DrugData['Sell_Price'];
-        $drugBuyPrice = $DrugData['Bought_Price'];
-        $drugInventory = $DrugData['Current_Inventory'];
-        $drugSupplier = $DrugData['Supplier'];
-        $drugImage = $DrugData['Drug_Image'];
-        $drugSchedule = $DrugData['Schedule'];
-        $drugStrength = $DrugData['Strength'];
-        $drugCreation = $DrugData['Date_Created'];
-        $userid = $DrugData['UserID'];
+        $Ingredient_Name = $AllergyData['Ingredient_Name'];
+        $Gov_HealthCard_Num = $AllergyData['Gov_HealthCard_Num'];
 
-        //checks to see if the drug image variable is null if it is assign it to be equal to none
-        if($drugImage == NULL){
-            $drugImage = "none";
-        }
+        $queryIngredientGet = "select * from drug/ingredient_allergies where Ingredient_Name = '$Ingredient_Name'";
+        $queryIngredientRes = mysqli_query($conn, $queryIngredientGet);
+        $IngredientData = mysqli_fetch_assoc($queryIngredientRes);
 
-        if($drugCreation == NULL){
-            $drugCreation = "none";
-        }
-        
+        $ingredientName = $IngredientData['Ingredient_Name'];
+        $ingredientAlternative = $IngredientData['Drug/Ingredient_Alt'];
+        $ingredientUsage = $IngredientData['Drug/Ingredient_Usage'];
+
         //displays the data to the html
-        echo "<p>Drug Identification Number (DIN): $DINum</p>";
-        echo "<p>Drug Name: $drugName</p>";
-        echo "<p>Generic Name: $drugGenericName</p>";
-        echo "<p>Drug Strength: $drugStrength</p>";
-        echo "<p>Drug Schedule: $drugSchedule</p>";
-        echo "<p>Drug Pack Size: $drugPackSize</p>";
-        echo "<p>Drug Sell Price: $drugSellPrice</p>";
-        echo "<p>Drug Bought Price: $drugBuyPrice</p>";
-        echo "<p>Current Inventory: $drugInventory</p>";
-        echo "<p>Supplier: $drugSupplier</p>";
-        echo "<p>Drug Image: $drugImage</p>";
-        echo "<p>Drug Profile Created: $drugCreation</p>";
-        echo "<p>UserID of User Who created this drug profile: $userid</p>";
+        echo "<p>Drug Identification Number (DIN): $Gov_HealthCard_Num</p>";
+        echo "<p>Allergen Name: $Ingredient_Name</p>";
+        //echo "<p>Allergen Alternative: $ingredientAlternative</p>";
+        //echo "<p>Allergen Usage: $ingredientUsage</p>";
+
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>There was an problem retrieving this information.</p>";
+        echo"<p>Patient $patientHealthCardNum does not have any recorded allergies.</p>";
     }
 ?>

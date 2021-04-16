@@ -40,40 +40,8 @@
 <html>
 <head>
     <title>Login Page</title>
+    <link rel="stylesheet" href = "style.css" text="text/css">
 </head>
-<style>
-    #buttonStuff{
-        background-color: #0BDA51;
-        color: black;
-        padding: 0.5rem;
-        font-size: 14px;
-        font-weight: bold;
-        border: 2px solid black;
-        border-radius: 1px solid black;
-        cursor: pointer;
-    }
-
-    #formbox{
-        /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
-            -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
-        right: 50%;
-        bottom: 50%;
-        transform: translate(50%,50%);
-        position: absolute;
-        text-align: center;
-        vertical-align: center;
-        margin: 0 auto;
-        background-color: whitesmoke;
-        border-radius: 2px;
-        border: 3px solid black;
-        width: 25%;
-        padding: 5%;
-    }
-
-    body{
-        background-color: darkgrey;
-    }
-</style>
 
 <body>
     <div id = "formbox">
@@ -91,8 +59,7 @@
 
             <input id="buttonStuff" type="submit" value="Login"/>
             <br>
-            <br>
-            <a href="registration.php" style="font-size: 17px; color: black; font-weight: bold;">Click Here to Register</a>
+            <a href="registration.php">Click Here to Register</a>
             <br>
         </form>
     </div>

@@ -40,12 +40,14 @@ CREATE TABLE `can_have` (
 --
 
 CREATE TABLE `dependent` (
-  `First_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `First_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Last_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `Parent_HealthCard_Num` int(11) NOT NULL,
   `Relationship` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `dependent` (`First_Name`, `Last_Name`, `Parent_HealthCard_Num`, `Relationship`) VALUES
+('Johnny', 'Ten', '1', 'Son');
 -- --------------------------------------------------------
 
 --
@@ -54,13 +56,17 @@ CREATE TABLE `dependent` (
 
 CREATE TABLE `doctor` (
   `Doctor_LicenseNum` int(11) NOT NULL,
-  `First_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Phone` int(11) NOT NULL,
-  `Signature_Photo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Office_Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Practice_Province` varchar(128) NOT NULL
+  `First_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Last_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Phone` int(11),
+  `Signature_Photo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Office_Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Practice_Province` varchar(128)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `doctor` (`Doctor_LicenseNum`, `First_Name`, `Last_Name`, `Phone`, `Signature_Photo`, `Office_Address`, `Practice_Province`) VALUES
+('741', 'Jane', 'Doe', '852', '', '', 'AB'),
+('951', 'John', 'Doe', '852', '', '', 'AB');
 
 -- --------------------------------------------------------
 
@@ -70,9 +76,13 @@ CREATE TABLE `doctor` (
 
 CREATE TABLE `drug/ingredient_allergies` (
   `Ingredient_Name` varchar(56) NOT NULL,
-  `Drug/Ingredient_Alt` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Drug/Ingredient_Usage` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `Drug/Ingredient_Alt` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Drug/Ingredient_Usage` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `drug/ingredient_allergies` (`Ingredient_Name`, `Drug/Ingredient_Alt`, `Drug/Ingredient_Usage`) VALUES
+('phenols', 'something else', 'disinfectant'),
+('rose', 'something else', 'fragrance');
 
 -- --------------------------------------------------------
 
@@ -82,17 +92,17 @@ CREATE TABLE `drug/ingredient_allergies` (
 
 CREATE TABLE `drug_prescription` (
   `Patient_HealthCard_Num` int(11) NOT NULL,
-  `PharmLicense_Num` int(11) NOT NULL,
-  `PharmID` int(11) NOT NULL,
-  `DocLicense_Num` int(11) NOT NULL,
-  `Prescriber_Name` varchar(56) NOT NULL,
+  `PharmLicense_Num` int(11),
+  `PharmID` int(11),
+  `DocLicense_Num` int(11),
+  `Prescriber_Name` varchar(56),
   `DIN` int(11) NOT NULL,
   `RX_Number` int(11) NOT NULL,
-  `Fill_Status` int(11) NOT NULL,
-  `Date_Recieved` varchar(128) NOT NULL,
+  `Fill_Status` int(11),
+  `Date_Recieved` varchar(128),
   `Instruction` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Date_Last_Filled` varchar(128) NOT NULL,
-  `Amount_Last_Filled` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `Date_Last_Filled` varchar(128),
+  `Amount_Last_Filled` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -105,18 +115,23 @@ CREATE TABLE `drug_profile` (
   `DIN` int(11) NOT NULL,
   `Drug_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Drug_Generic_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Pack_Size` int(11) NOT NULL,
-  `Sell_Price` int(11) NOT NULL,
-  `Bought_Price` int(11) NOT NULL,
-  `Current_Inventory` int(11) NOT NULL,
-  `Supplier` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Drug_Image` int(11) NOT NULL,
-  `Schedule` varchar(128) COLLATE utf8_bin NOT NULL,
-  `Strength` int(11) NOT NULL,
-  `Date_Created` varchar(128) COLLATE utf8_bin NOT NULL,
+  `Pack_Size` int(11),
+  `Sell_Price` int(11),
+  `Bought_Price` int(11),
+  `Current_Inventory` int(11),
+  `Supplier` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Drug_Image` int(11),
+  `Schedule` varchar(128) COLLATE utf8_bin,
+  `Strength` int(11),
+  `Date_Created` varchar(128) COLLATE utf8_bin,
   `UserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+INSERT INTO `drug_profile` (`DIN`, `Drug_Name`, `Drug_Generic_Name`, `Pack_Size`, `Sell_Price`, `Bought_Price`, `Current_Inventory`, `Supplier`, `Drug_Image`, `Schedule`, `Strength`, `Date_Created`, `UserID`) VALUES
+('102345', 'Glumetza', 'Metfromin', '100', '20', '5', '300', 'Teva', '0', '3', '30', '1', '123'),
+('456123', 'Crestor', 'Lipitor', '100', '50', '10', '500', 'Pfizer', '0', '1', '10', '2', '13'),
+('456789', 'abcd', 'abcd', '100', '10', '1', '100', 'Pfizer', '1', '1', '30', '2', '13'),
+('789456', 'Blexten', 'Antihistamine', '30', '200', '50', '30', 'Pfizer', '0', '1', '10', '2', '13');
 -- --------------------------------------------------------
 
 --
@@ -139,18 +154,18 @@ CREATE TABLE `insurance_plan` (
 
 CREATE TABLE `patient_profile` (
   `Gov_HealthCard_Num` int(11) NOT NULL,
-  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `COVID_Test_Result` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Weight` varchar(11) NOT NULL,
-  `Height` varchar(11) NOT NULL,
-  `Preferred_Language` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Sex` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Phone_Number` int(11) NOT NULL,
-  `Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `COVID_Test_Result` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Weight` varchar(11),
+  `Height` varchar(11),
+  `Preferred_Language` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Sex` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `Phone_Number` int(11),
+  `Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `Provider_Notes` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `Day_Of_Birth` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Day_Of_Birth` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `UserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -177,13 +192,13 @@ INSERT INTO `patient_profile` (`Gov_HealthCard_Num`, `First_Name`, `Last_Name`, 
 CREATE TABLE `pharmacist` (
   `PharmLicense_Num` int(11) NOT NULL,
   `PharmID` int(11) NOT NULL,
-  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Phone` int(11) NOT NULL,
-  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Office_Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Practice_Province` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Photo_Signature` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Phone` int(11) DEFAULT NULL,
+  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Office_Address` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Practice_Province` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Photo_Signature` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -211,12 +226,13 @@ CREATE TABLE `prescribed_to` (
 --
 
 CREATE TABLE `prescriber` (
-  `DocLicenseNum` int(11) NOT NULL,
-  `PharmLicenseNum` int(11) NOT NULL,
-  `PharmID` int(11) NOT NULL,
-  `Prescriber_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `DocLicenseNum` int(11),
+  `PharmLicenseNum` int(11),
+  `PharmID` int(11) DEFAULT NULL,
+  `Prescriber_Name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `prescriber` (`DocLicenseNum`, `PharmLicenseNum`, `PharmID`, `Prescriber_Name`) VALUES ('741', NULL, NULL, 'Jane');
 -- --------------------------------------------------------
 
 --
@@ -225,10 +241,10 @@ CREATE TABLE `prescriber` (
 
 CREATE TABLE `technican` (
   `TechID` int(11) NOT NULL,
-  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Phone` int(11) NOT NULL,
-  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Phone` int(11) DEFAULT NULL,
+  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
@@ -246,10 +262,10 @@ INSERT INTO `technican` (`TechID`, `First_Name`, `Last_Name`, `Phone`, `Password
 
 CREATE TABLE `users` (
   `UserID` int(11) NOT NULL,
-  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Phone` int(11) NOT NULL,
-  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `First_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Last_Name` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Phone` int(11) DEFAULT NULL,
+  `Password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --

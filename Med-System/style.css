@@ -1,4 +1,4 @@
-/*Nothing here is used really, but just leave it in here.*/
+
 .title{
     color: white;
     font-size: 20px;
@@ -109,33 +109,6 @@ body{
 
 .navigationBar a:hover{
     background-color: lightgreen;
-}
-
-#buttonStuff{
-    background-color: #0BDA51;
-    color: white;
-    padding: 0.5rem;
-    font-size: 14px;
-    font-weight: bold;
-    border: 2px solid black;
-    border-radius: 1px solid black;
-}
-
-#formbox{
-    /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
-        -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
-    right: 50%;
-    bottom: 50%;
-    transform: translate(50%,50%);
-    position: absolute;
-    text-align: center;
-    vertical-align: center;
-    margin: 0 auto;
-    background-color: whitesmoke;
-    border-radius: 2px;
-    border: 3px solid black;
-    width: 25%;
-    padding: 5%;
 }
 
 /* reference used for this css:  
