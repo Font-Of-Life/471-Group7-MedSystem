@@ -65,7 +65,6 @@
 
                 <input id = "buttonStuff" type="submit" name="editButton" value="Edit">
 
-                <input type="submit" name="submit" value="Edit">
                 <a href="viewPrescriptionDetails.php">View Patient Prescriptions</a>
                 <a href="viewDependentsDetails.php">View Patient Dependents</a>
                 <a href="viewAllergyDetails.php">View Patient Allergies</a>
@@ -211,16 +210,9 @@
                 $DocLicenseNum = $row['DocLicense_Num'];
 
                 //prints out the data saved in the variables into the html
-                echo "<p style='text-align: center;  font-size: 16px;'>Prescribed By Doctor: $PrescriberName</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Prescriber Doctor License Number: $DocLicenseNum</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist ID who gives prescription: $PharmID</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist License Number: $PharmLicenseNumber</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Date Recieved: $Date_Recieved</p>";
                 echo "<p style='text-align: center;  font-size: 16px;'>Drug ID: $DIN</p>";
                 echo "<p style='text-align: center;  font-size: 16px;'>RX_Number: $RX_Number</p>";
                 echo "<p style='text-align: center;  font-size: 16px;'>Fill Status: $FillStat</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Date Last Filled: $DateLastFilled</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Amount Last Filled: $AmountLastFilled</p>";
                 echo "<p style='text-align: center;  font-size: 16px;'>Instructions: $Instruction</p>";
             }
         } 
@@ -237,16 +229,16 @@
 
         //checks to see if the table returned by the sql database is empty
         if(mysqli_num_rows($patientDependentQuery) > 0){
-            //if it isnt loops through all the rows of the table retrieved from the sql database on that patient's dependents
-            while($row = mysqli_fetch_assoc($patientDependentQuery)){
-                //saves the data to these variables to print them
-                $depName = $row['First_Name']." ".$patientDependentQuery['Last_Name'];
-                $DepRelationship = $row['Relationship'];
+            $DependentData = mysqli_fetch_assoc($patientDependentQuery);
 
-                //displays the information from the variables onto the html
-                echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
-                echo "<p style='text-align: center;  font-size: 16px;'>Dependent Relationship: $DepRelationship</p>";
-            }
+            //saves the data to these variables to print them
+            $color="black";
+            $depName = $DependentData['First_Name']." ".$DependentData['Last_Name'];
+            $DepRelationship = $DependentData['Relationship'];
+
+            //displays the information from the variables onto the html
+            echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>Dependent Relationship: $DepRelationship</p>";
         }
         else{
             //else this means that the patient has no dependents, so prints a message to the html about it
@@ -254,12 +246,12 @@
         }
         
         //displays the insurance section of the patient
-        echo "<h2 style='text-align: center;  font-size: 16px;'>Insurance</h2>";
+        echo "<h2 style='text-align: center;'>Insurance</h2>";
         //retrieves the data regarding the patient's insurance from the sql database
         $getPatientInsurance = "select * from `insurance plan` where Policy_Holder_Health_Num ='$healthcard'";
         $insuranceQueryRes = mysqli_query($conn, $getPatientInsurance);
         
-        //checks to see if the recieved table from the sql database is empty
+        //checks to see if the received table from the sql database is empty
         if(mysqli_num_rows($insuranceQueryRes)>0){
             //if it isnt saves the data from the table into the following variables
             $policyNum = $insuranceQueryRes['Policy_Number'];
@@ -275,11 +267,11 @@
         }
         else{
             //else this means the patient has no insurance so display a message about it.
-            echo "<p>No insurance Plan</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No insurance Plan</p>";
         }
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>There was an problem retrieving this information.</p>";
+        echo"<p style='text-align: center;  font-size: 16px;'>There was an problem retrieving this information.</p>";
     }
 ?>
