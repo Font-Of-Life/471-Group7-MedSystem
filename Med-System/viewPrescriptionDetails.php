@@ -6,9 +6,9 @@
     include("LoginChecker.php");
 
     $userDataSessions = isLoggedIn($conn);
-    $drugDIN = $_SESSION['Gov_HealthCard_Num'];
-    if($drugDIN == NULL){
-        $drugDIN = $_GET['Gov_HealthCard_Num'];
+    $healthcard = $_SESSION['Gov_HealthCard_Num'];
+    if($healthcard == NULL){
+        $healthcard = $_GET['Gov_HealthCard_Num'];
     }
     
 ?>
