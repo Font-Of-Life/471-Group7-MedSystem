@@ -109,6 +109,13 @@
             header("Location: editPatientProfile.php");
             exit;  
         }
+        if($optionSelected == "Depend"){
+            //set session variables for the property that was clicked
+            $_SESSION['HC'] = $hcNum;
+            // then redirect to viewProperty page
+            header("Location: editDependentDetails.php");
+            exit;
+        }
 		
     }
     /* if(['edit'] == 'POST'){

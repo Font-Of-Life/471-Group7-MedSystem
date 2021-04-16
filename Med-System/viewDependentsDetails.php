@@ -58,6 +58,8 @@
             <form>
                 <a href="viewPatientDetails.php">Back to Patient Profile</a>
                 <a href="registerDependents.php">Add Patient Dependents</a>
+                <a href="editDependentDetails.php">Edit Patient Dependents</a>
+
             </form>
             
         </div>
