@@ -100,10 +100,14 @@ CREATE TABLE `drug_prescription` (
   `RX_Number` int(11) NOT NULL,
   `Fill_Status` int(11),
   `Date_Recieved` varchar(128),
-  `Instruction` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Instruction` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `Date_Last_Filled` varchar(128),
   `Amount_Last_Filled` varchar(56) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values 
+(1, NULL, NULL, 951, 'Jane', 102345, 9551, 1, 'Dec 31,2020','Take a Pill every 4 hours', 'Jan 1, 2021', '100mg');
+
 
 -- --------------------------------------------------------
 
