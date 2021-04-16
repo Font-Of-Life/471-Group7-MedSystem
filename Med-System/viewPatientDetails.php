@@ -69,6 +69,7 @@
                 <a href="viewPrescriptionDetails.php">View Patient Prescriptions</a>
                 <a href="viewDependentsDetails.php">View Patient Dependents</a>
                 <a href="viewAllergyDetails.php">View Patient Allergies</a>
+                <a href="viewInsuranceDetails.php">View Insurance Details</a>
             </form>
             
         </div>
@@ -178,16 +179,16 @@
             //loops through all the entries in the table to display all the allergies of the patient
             while($row = mysqli_fetch_assoc($allergyQueryRes)){
                 $allergicTo = $row['Ingredient_Name'];
-                echo "<p>$allergicTo</p>";
+                echo "<p style='text-align: center;  font-size: 16px;'>$allergicTo</p>";
             }        
         } 
         else {
             //else this means the patient has no allergies so display a message saying none.
-            echo "<p>None</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>None</p>";
         }
 
         //displays the drug prescription section of the patient
-        echo "<h2>Drug Prescription List</h2>";
+        echo "<h2 style='text-align: center;'>Drug Prescription List</h2>";
         //retrieve the drug prescriptions the patient has from the sql database
         $getDrugPresription = "select * from drug_prescription where Patient_HealthCard_Num = '$healthcard'";
         $drugPrescriptionQuery = mysqli_query($conn,$getDrugPresription);
@@ -225,11 +226,11 @@
         } 
         else {
             //else this means the patient has no current drug prescriptions, so displays that message to the html
-            echo "<p>No Drug Prescriptions.</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No Drug Prescriptions.</p>";
         }
 
         //retrieves and displays the information of the patient's dependents
-        echo "<h2>Dependent List</h2>";
+        echo "<h2 style='text-align: center;'>Dependent List</h2>";
         //retrieve the data of the patient's dependents from the sql database
         $getPatientDependents = "select * from dependent where Parent_HealthCard_Num = '$healthcard'";
         $patientDependentQuery = mysqli_query($conn, $getPatientDependents);
@@ -249,11 +250,11 @@
         }
         else{
             //else this means that the patient has no dependents, so prints a message to the html about it
-            echo "<p>No Dependents</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>No Dependents</p>";
         }
         
         //displays the insurance section of the patient
-        echo "<h2>Insurance</h2>";
+        echo "<h2 style='text-align: center;  font-size: 16px;'>Insurance</h2>";
         //retrieves the data regarding the patient's insurance from the sql database
         $getPatientInsurance = "select * from `insurance plan` where Policy_Holder_Health_Num ='$healthcard'";
         $insuranceQueryRes = mysqli_query($conn, $getPatientInsurance);

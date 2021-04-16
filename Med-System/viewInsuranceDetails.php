@@ -57,7 +57,7 @@
         <div>
             <form>
                 <a href="viewPatientDetails.php">Back to Patient Profile</a>
-                <a href="registerDependents.php">Add Patient Dependents</a>
+                <a href="registerInsurance.php">Add Insurance Information</a>
             </form>
             
         </div>
@@ -75,28 +75,33 @@
             die;
         }
     } */
+    // 	Policy_Number	Policy_Holder_Health_Num	Company	Start_Date	End_Date
     //gets the query data from the sql database of the current selected patient in the patient profile table 
     $queryPatientGet = "select * from insurance_plan where Policy_Holder_Health_Num = '$patientHealthCardNum'";
     $queryPatientRes = mysqli_query($conn, $queryPatientGet);
 
     //checks to see if the query returned is not empty
     if(mysqli_num_rows($queryPatientRes) > 0){
-        echo "<h2>Dependent List</h2>";
+        echo "<h2>Insurance Information</h2>";
         $InsuranceData = mysqli_fetch_assoc($queryPatientRes);
 
         // Policy_Number	Policy_Holder_Health_Num	Company	Start_Date	End_Date
         $color="black";
-        $depName = $InsuranceData['First_Name'];
-        $policyNum = $InsuranceData['Last_Name'];
-        $startDate = $InsuranceData['Last_Name'];
-        $endDate = $InsuranceData['Relationship'];
+        $Policy_Number = $InsuranceData['Policy_Number'];
+        $Policy_Holder_Health_Num = $InsuranceData['Policy_Holder_Health_Num'];
+        $Company = $InsuranceData['Company'];
+        $Start_Date = $InsuranceData['Start_Date'];
+        $End_Date = $InsuranceData['End_Date'];
 
         //displays the information from the variables onto the html
-        echo "<p>Dependent Name: $depName</p>";
-        echo "<p>Dependent Relationship: $DepRelationship</p>";
+        echo "<p>Policy_Number: $Policy_Number</p>";
+        echo "<p>Policy Holder Health Card Number: $Policy_Holder_Health_Num</p>";
+        echo "<p>Company: $Company</p>";
+        echo "<p>Start Date: $Start_Date</p>";
+        echo "<p>End Date: $End_Date</p>";
     }
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>No Dependents</p>";
+        echo"<p>No Insurance Information</p>";
     }
 ?>
