@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Details</title>
+        <title>Patient Allergy Details</title>
         <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -37,6 +37,27 @@
             background-color: mediumseagreen;
         }
 
+        #buttonStuff{
+            margin-left: 10px;
+            background-color: #0BDA51;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
         body{
             background-color: lightgrey;
         }
@@ -57,9 +78,9 @@
             <center><h1>Drug <?php echo $drugDIN?></h1></center>
         </div>
         <div>
-            <form>
-                <a href="viewPatientDetails.php">Back to Patient Profile</a>
-                <a href="registerAllergy.php">Add an Allergy Record</a>
+            <form id = "formbox">
+                <a href="viewPatientDetails.php" id = "buttonStuff">Back to Patient Profile</a>
+                <a href="registerAllergy.php" id = "buttonStuff">Add an Allergy Record</a>
             </form>
 
         </div>
@@ -103,14 +124,14 @@
         $ingredientUsage = $IngredientData['Drug/Ingredient_Usage'];
 
         //displays the data to the html
-        echo "<p>Drug Identification Number (DIN): $Gov_HealthCard_Num</p>";
-        echo "<p>Allergen Name: $Ingredient_Name</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Drug Identification Number (DIN): $Gov_HealthCard_Num</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Allergen Name: $Ingredient_Name</p>";
         //echo "<p>Allergen Alternative: $ingredientAlternative</p>";
         //echo "<p>Allergen Usage: $ingredientUsage</p>";
 
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>Patient $patientHealthCardNum does not have any recorded allergies.</p>";
+        echo"<p style='text-align: center;  font-size: 16px;'>Patient $patientHealthCardNum does not have any recorded allergies.</p>";
     }
 ?>

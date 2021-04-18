@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Details</title>
+        <title>View Dependent Details</title>
         <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -37,6 +37,27 @@
             background-color: mediumseagreen;
         }
 
+        #buttonStuff{
+            margin-left: 10px;
+            background-color: #0BDA51;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
         body{
             background-color: lightgrey;
         }
@@ -45,45 +66,35 @@
         <div class="titleClass">
             <h1 class="title">Insert Title of medical insitute</h1>
         </div>
-        <div class="navigationBar">
+        <div class="navigationBar" style="margin-bottom: 20px;">
             <a href="LogOut.php">Log Out</a>
-            <a href="index.php">Home</a>
-            <a href="patientSearch.php">Patient Search</a>
-            <a href="registerPatient.php">Add Patient Profile</a>
+            <a href="index.php" style="margin: 0 20px;">Home</a>
+            <a href="patientSearch.php" style="margin: 0 20px;">Patient Search</a>
+            <a href="registerPatient.php" style="margin: 0 20px;">Add Patient Profile</a>
+        </div>
+        
+        <div>
+            <form id="formbox">
+                <a href="viewPatientDetails.php" id="buttonStuff">Back to Patient Profile</a>
+                <a href="registerDependents.php" id="buttonStuff">Add Patient Dependents</a>
+                <a href="editDependentDetails.php" id="buttonStuff">Edit Patient Dependents</a>
+
+            </form>   
         </div>
         <div>
             <center><h1>Patient: <?php echo $patientHealthCardNum?></h1></center>
-        </div>
-        <div>
-            <form>
-                <a href="viewPatientDetails.php">Back to Patient Profile</a>
-                <a href="registerDependents.php">Add Patient Dependents</a>
-                <a href="editDependentDetails.php">Edit Patient Dependents</a>
-
-            </form>
-            
         </div>
     </body>
 </html>
 
 <?php
-    //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
-    //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
-    /* if($_SERVER['REQUEST_METHOD'] == "POST"){
-        $editChoice = $_POST['edit'];
-        if($editChoice == "PatientProfile"){
-            $_SESSION['Gov_HealthCard_Num'] = $patientHealthCardNum;
-            header("Location: editPatientProfile.php");
-            die;
-        }
-    } */
     //gets the query data from the sql database of the current selected patient in the patient profile table 
     $queryPatientGet = "select * from dependent where Parent_HealthCard_Num = '$patientHealthCardNum'";
     $queryPatientRes = mysqli_query($conn, $queryPatientGet);
 
     //checks to see if the query returned is not empty
     if(mysqli_num_rows($queryPatientRes) > 0){
-        echo "<h2>Dependent List</h2>";
+        echo "<h2 style='text-align: center;'>Dependent List</h2>";
         $DependentData = mysqli_fetch_assoc($queryPatientRes);
 
         $color="black";
@@ -91,11 +102,11 @@
         $DepRelationship = $DependentData['Relationship'];
 
         //displays the information from the variables onto the html
-        echo "<p>Dependent Name: $depName</p>";
-        echo "<p>Dependent Relationship: $DepRelationship</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Dependent Relationship: $DepRelationship</p>";
     }
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>No Dependents</p>";
+        echo"<p style='text-align: center;  font-size: 16px;'>No Dependents</p>";
     }
 ?>

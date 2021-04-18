@@ -5,7 +5,7 @@ session_start();
     include("connections.php");
     include("LoginChecker.php");
 
-    $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
+    $patientHealthCardNum = $_SESSION['HC'];
     $pharmID = $_SESSION['UserID'];
 
 
@@ -34,7 +34,7 @@ session_start();
         // if not empty and it is valid, then do the following
         //if (!empty($DINum) && !empty($drugName) && !empty($drugGenericName)) {//&& !empty($drugPackSize) && !empty($drugSellPrice) && !empty($drugBuyPrice) && !empty($drugInventory) && !empty($drugStrength) && !empty($drugCreation) && !empty($userid)) {
         if (!empty($DINum)&&!empty($patientHealthCardNum)&& !empty($rxNum)) {
-            $message = "Passed first if statement";
+            //$message = "Passed first if statement";
             if(is_numeric($DINum)&&is_numeric($patientHealthCardNum)&&is_numeric($rxNum)) {//&& is_numeric($userid) && is_numeric($drugPackSize) && is_numeric($drugSellPrice) && is_numeric($drugBuyPrice) && is_numeric($drugInventory) && is_numeric($drugStrength)){
                 $conditionalQuery = "select * from drug_profile where DIN = '$DINum'";
                 $CondQueryRes = mysqli_query($conn, $conditionalQuery);
@@ -94,8 +94,17 @@ session_start();
 
                         //register the following values into the prescrption table
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
-                        $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
-                        mysqli_query($conn, $queryRes);
+                        $checkQuery = "select * from drug_prescription where Patient_HeathCard_Num = '$patientHealthCardNum'";
+                        $getCheckQuery = mysqli_query($conn, $checkQuery);
+                        if(mysqli_num_rows($getCheckQuery) > 0){
+                            $queryRes = "update drug_prescription set PharmLicense_Num = '$pharmLicNum', PharmID ='$pharmID', DocLicense_Num = '$docLicNum', Prescriber_Name = '$prescibeName', DIN = '$DINum', RX_Number = '$rxNum', Fill_Status = '$fillStatus', Date_Recieved = '$recDate' , Instruction = '$instruct', Date_Last_Filled = '$lastFillDate', Amount_Last_Filled = '$lastFillQuantity' where Patient_HealthCard_Num ='$patientHealthCardNum'";
+                            mysqli_query($conn, $queryRes);
+                        }
+                        else{
+                            $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
+                            mysqli_query($conn, $queryRes);
+                        }
+                        
                         header("Location: viewPatientDetails.php");
                         exit;
                     }else{
@@ -120,7 +129,7 @@ session_start();
 <!DOCTYPE html>
 <html>
     <head>
-            <title>Prescription Registration</title>
+            <title>Prescription Edit</title>
             <link rel="stylesheet" href="style.css" type="text/css">
     </head>
 
@@ -154,6 +163,7 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
+            margin-bottom: 20px;
         }
 
         .navigationBar a{
@@ -169,17 +179,16 @@ session_start();
         .navigationBar a:hover{
             background-color: lightgreen;
         }
-
+        
         #buttonStuff{
-            background-color: #0BDA51;
-            color: black;
-            padding: 0.5rem;
-            font-size: 14px;
-            font-weight: bold;
-            border: 2px solid black;
-            border-radius: 1px solid black;
-            cursor: pointer;
-            margin-top: 10px;
+        background-color: #0BDA51;
+        color: black;
+        padding: 0.5rem;
+        font-size: 14px;
+        font-weight: bold;
+        border: 2px solid black;
+        border-radius: 1px solid black;
+        cursor: pointer;
         }
 
         #formbox{
@@ -191,7 +200,6 @@ session_start();
             border-radius: 2px;
             border: 3px solid black;
             width: 30%;
-            margin-top: 20px;
             padding: 3%;
         }
     </style>
@@ -211,21 +219,10 @@ session_start();
         </div>
             <div id="formbox">
                     <form method="post">
-                            <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Registration</div>
-                            <p><b><?php echo $pharmLicNum, 'Prescription for patient with health card number: ', $patientHealthCardNum?></b></p>
-<!--                             <p>
-                                <label>Health Care Card Number:</label>
-                                <input type="text" id="textbox" name="healthcard"/>
-                            </p>
+                            <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Edit</div>
+                            <p><?php echo $pharmLicNum, 'Presecription for patient with health card number: ', $patientHealthCardNum?></p>
                             <p>
-                                <label>Pharmacist License Number:</label>
-                                <input type="text" id="textbox" name="pharmLicNum"/>
-                            </p>
-                            <p>
-                                <label>Pharmacist ID:</label>
-                                <input type="text" id="textbox" name="pharmID"/>
-                            </p> -->                            <p>
-                            <label>Prescription Number:</label>
+                                <label>Prescription Number:</label>
                                 <input type="text" id="textbox" name="rxNum"/>
                             </p>
                             <p>
@@ -267,7 +264,7 @@ session_start();
                             </p>
 
 
-                            <input type="submit" value="Add" id="buttonStuff" />
+                            <input type="submit" value="Add" id="buttonStuff"/>
                             <br>
                     </form>
             </div>

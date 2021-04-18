@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Patient Prescriptions</title>
+        <title>View Patient Prescriptions</title>
         <link rel="stylesheet" type="text/css" href = "style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -39,6 +39,17 @@
             width: 100%;
             height: 60px;
             background-color: mediumseagreen;
+        }
+
+        #buttonStuff{
+            background-color: #0BDA51;
+            color: black;
+            padding: 0.5rem;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
         }
 
         body{
@@ -85,7 +96,7 @@
     //checks to see if the query recieved is not empty
     if(mysqli_num_rows($drugPrescriptionQuery)>0){
         //if it isnt loops through all the patient's drug prescription entries, and prints it out onto the html
-        echo "<h2>Prescriptions List</h2>";
+        echo "<h2 style='text-align: center;'>Prescriptions List</h2>";
         $PrescriptionData = mysqli_fetch_assoc($drugPrescriptionQuery);
 
         $DIN = $PrescriptionData['DIN'];
@@ -101,17 +112,17 @@
         $DocLicenseNum = $PrescriptionData['DocLicense_Num'];
 
         //prints out the data saved in the variables into the html
-        echo "<p>Prescribed By Doctor: $PrescriberName</p>";
-        echo "<p>Prescriber Doctor License Number: $DocLicenseNum</p>";
-        echo "<p>Pharmacist ID who gives prescription: $PharmID</p>";
-        echo "<p>Pharmacist License Number: $PharmLicenseNumber</p>";
-        echo "<p>Date Recieved: $Date_Recieved</p>";
-        echo "<p>Drug ID: $DIN</p>";
-        echo "<p>RX_Number: $RX_Number</p>";
-        echo "<p>Fill Status: $FillStat</p>";
-        echo "<p>Date Last Filled: $DateLastFilled</p>";
-        echo "<p>Amount Last Filled: $AmountLastFilled</p>";
-        echo "<p>Instructions: $Instruction</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Prescribed By Doctor: $PrescriberName</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Prescriber Doctor License Number: $DocLicenseNum</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist ID who gives prescription: $PharmID</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Pharmacist License Number: $PharmLicenseNumber</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Date Recieved: $Date_Recieved</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Drug ID: $DIN</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>RX_Number: $RX_Number</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Fill Status: $FillStat</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Date Last Filled: $DateLastFilled</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Amount Last Filled: $AmountLastFilled</p>";
+        echo "<p style='text-align: center;  font-size: 16px;'>Instructions: $Instruction</p>";
     } 
     else {
         //else this means the patient has no current drug prescriptions, so displays that message to the html

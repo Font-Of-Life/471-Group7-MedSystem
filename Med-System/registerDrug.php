@@ -129,6 +129,7 @@ session_start();
             border: 2px solid black;
             border-radius: 1px solid black;
             cursor: pointer;
+            margin-top: 10px;
         }
 
         #formbox{
@@ -140,7 +141,9 @@ session_start();
             border-radius: 2px;
             border: 3px solid black;
             width: 25%;
-            padding: 5%;
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-bottom: 20px;
         }
     </style>
 
@@ -162,7 +165,7 @@ session_start();
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Drug Registration</div>
                             <p><?php echo $message?></p>
                             <p>
-                                <label>Drug Identification Number DIN:</label>
+                                <label>Drug ID # (DIN):</label>
                                 <input type="text" id="textbox" name="DINum"/>
                             </p>
                             <p>
@@ -222,7 +225,7 @@ session_start();
                                 <input type="text" id="textbox" name="drugCreation"/>
                             </p>
 
-                            <input type="submit" value="Register"/>
+                            <input type="submit" value="Register" id="buttonStuff"/>
                             <br>
                     </form>
             </div>

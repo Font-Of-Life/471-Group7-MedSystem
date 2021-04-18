@@ -52,7 +52,7 @@ session_start();
 <!DOCTYPE html>
 <html>
     <head>
-            <title>Patient Registration</title>
+            <title>Patient Dependent Registration</title>
             <link rel="stylesheet" href="style.css" type="text/css">
     </head>
 
@@ -86,6 +86,7 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
+            margin-bottom: 20px;
         }
 
         .navigationBar a{
@@ -100,6 +101,29 @@ session_start();
 
         .navigationBar a:hover{
             background-color: lightgreen;
+        }
+
+        #buttonStuff{
+        background-color: #0BDA51;
+        color: black;
+        padding: 0.5rem;
+        font-size: 14px;
+        font-weight: bold;
+        border: 2px solid black;
+        border-radius: 1px solid black;
+        cursor: pointer;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 2px;
+            border: 3px solid black;
+            width: 25%;
+            padding: 5%;
         }
     </style>
 
@@ -117,7 +141,7 @@ session_start();
         </div>
             <div id="formbox">
                     <form method="post">
-                            <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient Registration</div>
+                            <div style="font-size: 22px; margin-bottom: 14px; color: black; font-weight:bold;">Patient Registration</div>
                             <p><?php echo $message?></p>
 
                             <p>
@@ -129,7 +153,7 @@ session_start();
                                 <input type="text" id="textbox" name="Last_Name"/>
                             </p>
                             <p>
-                                <label>Parent Health Card Number:</label>
+                                <label>Parent HC #:</label>
                                 <input type="text" id="textbox" name="Parent_HealthCard_Num"/>
                             </p>
                             <p>
@@ -137,7 +161,7 @@ session_start();
                                 <input type="text" id="textbox" name="Relationship"/>
                             </p>
 
-                            <input type="submit" value="Register"/>
+                            <input type="submit" value="Register" id="buttonStuff" style="margin-top: 20px;"/>
                             <br>
                     </form>
             </div>

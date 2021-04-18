@@ -102,6 +102,29 @@ session_start();
         .navigationBar a:hover{
             background-color: lightgreen;
         }
+
+        #buttonStuff{
+        background-color: #0BDA51;
+        color: black;
+        padding: 0.5rem;
+        font-size: 14px;
+        font-weight: bold;
+        border: 2px solid black;
+        border-radius: 1px solid black;
+        cursor: pointer;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 2px;
+            border: 3px solid black;
+            width: 25%;
+            padding: 5%;
+        }
     </style>
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -126,7 +149,7 @@ session_start();
                                 <input type="text" id="textbox" name="Policy_Number"/>
                             </p>
                             <p>
-                                <label>Policy Holder Health Card Number:</label>
+                                <label>Policy Holder HC #:</label>
                                 <input type="text" id="textbox" name="Policy_Holder_Health_Num"/>
                             </p>
                             <p>
@@ -142,7 +165,7 @@ session_start();
                                 <input type="text" id="textbox" name="End_Date"/>
                             </p>
 
-                            <input type="submit" value="Register"/>
+                            <input type="submit" value="Register" id="buttonStuff"/>
                             <br>
                     </form>
             </div>

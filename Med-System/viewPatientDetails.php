@@ -116,18 +116,23 @@
         }
         else if($optionSelected == "Depen"){
             header("Location: editDependentDetails.php");
+            die;
         }
         else if($optionSelected == "Insur"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
             header("Location: editInsuranceDetails.php");
-
+            die;
         }
         else if($optionSelected == "Aller"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
-            header("Location: editAllergyDetails.php");
-            exit;
+            header("Location: editDrugPrescription.php");
+            die;
+        } 
+        else {
+            header("Location: editDrugPrescription.php");
+            die;
         }
 		
     }
