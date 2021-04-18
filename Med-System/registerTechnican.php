@@ -4,6 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -25,6 +26,8 @@ session_start();
                 $CondQueryRes = $stmt->get_result();
                     
                 if(mysqli_num_rows($CondQueryRes) <= 0){
+                    $DataArr['users data: '] = array("UserID: " => $techid, "Password: "=> $password, "first_name: " => $firstName, "last_name: " => $lastName, "Phone: "=> $phone);
+                    
                     //register the following values into the user table
                     $queryRes = "insert into users (UserID, First_Name, Last_Name, Phone, Password) values ('$pharmid','$firstName','$lastName', '$phone','$password')";
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
@@ -34,6 +37,11 @@ session_start();
                     $queryRes = "insert into technican (TechID, First_Name, Last_Name, Phone, Password) values ('$techid', '$firstName', '$lastName', '$phone', '$password')";
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
+
+                    $DataArr['Technician data:'] = array("TechID: " => $techid, "Password: " => $password, "First_name: " => $firstName, "Last_name: " => $lastName, "phone: "=> $phone);
+                    $encodeJson = json_encode($DataArr);
+                    file_put_contents($fileName,$encodeJson);
+
                     // redirect user to login page
                     header("Location: LoginPage.php");
                     die;
@@ -41,16 +49,22 @@ session_start();
                 else{
                     //echo "TechID already exists. Enter a different value.";
                     $message = "TechID already exists. Enter a different value.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } else {
                 //echo "TechID or Phone number were not numerical values, try again.";
                 $message = "TechID or Phone number were not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
             
         } 
         else {
             //echo "Cannot have a empty field, try again.";
             $message = "Cannot have a empty field, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 

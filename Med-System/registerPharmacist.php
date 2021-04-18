@@ -45,15 +45,23 @@ session_start();
 
                     //checks to see if the tables are not empty, if so that means they are not registered in the database
                     if(mysqli_num_rows($CondQueryRes2) <= 0 && mysqli_num_rows($CondQueryRes) <= 0){
+                        $fileName = 'jsonfile.json';
                         //register the following values into the user table
                         $queryRes = "insert into users (UserID, First_Name, Last_Name, Phone, Password) values ('$pharmid','$firstName','$lastName', '$phone','$password')";
+                        
+                        $DataArr['users data: '] = array("UserID: " => $pharmid, "Password: "=> $password, "first_name: " => $firstName, "last_name: " => $lastName, "Phone: "=> $phone);
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         mysqli_query($conn, $queryRes);
+
 
                         //register the following values into the pharmacist table
                         $queryRes = "insert into pharmacist (PharmLicense_Num, PharmID, First_Name, Last_Name, Phone, Password, Office_Address, Practice_Province, Photo_Signature) values ('$pharmLicenseNum', '$pharmid', '$firstName', '$lastName', '$phone', '$password', '$office_address', '$practice_province', '$photo_signature')";
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         mysqli_query($conn, $queryRes);
+
+                        $DataArr['Pharmacist data:'] = array("PharmLicense_Num: " => $pharmLicenseNum, "PharmID: " => $pharmid, "Password: " => $password, "First_name: " => $firstName, "Last_name: " => $lastName, "phone: "=> $phone, "office address: "=>$office_address,"practice province: " => $practice_province, "photo_signature: "=>$photo_signature);
+                        $encodeJson = json_encode($DataArr);
+                        file_put_contents($fileName,$encodeJson);
 
                         // redirect user to login page so that they can login
                         header("Location: LoginPage.php");
@@ -62,21 +70,33 @@ session_start();
                     else {
                         //echo "PharmID or License Number already exists, please enter a different value.";
                         $message = "PharmID or License Number already exists, please enter a different value.";
+                        $encodeJson = json_encode($message);
+                        $fileName = 'jsonfile.json';
+                        file_put_contents($fileName,$encodeJson);
                     }
                 } 
                 else{
                     //echo "Invalid information, pharmid, pharmLicenseNum, and Phone have to be integers only.";
                     $message = "Invalid information, pharmid, pharmLicenseNum, and Phone have to be integers only.";
+                    $encodeJson = json_encode($message);
+                    $fileName = 'jsonfile.json';
+                    file_put_contents($fileName,$encodeJson);
                 }     
             } 
             else {
                 //echo "invalid information. First & last name, office address, practice province, photo signature cannot be integer values only.";
                 $message = "invalid information. First & last name, office address, practice province, photo signature cannot be integer values only.";
+                $encodeJson = json_encode($message);
+                $fileName = 'jsonfile.json';
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "Invalid Information Try again. Cannot have a empty field.";
             $message = "Invalid Information Try again. Cannot have a empty field.";
+            $encodeJson = json_encode($message);
+            $fileName = 'jsonfile.json';
+            file_put_contents($fileName,$encodeJson);
         }
     }
 

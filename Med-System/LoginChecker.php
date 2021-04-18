@@ -31,7 +31,7 @@ function isLoggedIn($conn){
             return $userSessionData;
         }   
     }
-    header("Location: loginPage.php");
+    header("Location: LoginPage.php");
     die;
 }
 ?>

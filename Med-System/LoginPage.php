@@ -18,22 +18,38 @@
             $stmt->execute();
             $QueryResult = $stmt->get_result();
 
-            if($QueryResult && mysqli_num_rows($QueryResult) >= 1){
+            if($QueryResult && mysqli_num_rows($QueryResult) > 0){
                 $userSessionData = mysqli_fetch_assoc($QueryResult);
 
                 if($userSessionData['Password'] == $password){
                     $_SESSION['UserID'] = $userid;
-
+                    $loginDataArr['user Login: '] = array("UserID: " => $userid, "Password: "=> $password);
+                    $encodeJson = json_encode($loginDataArr);
+                    $fileName = 'jsonfile.json';
+                    file_put_contents($fileName,$encodeJson);
+                    //http_response_code(200);
+                    //echo json_encode($loginDataArr);
                     header("Location: index.php");
                     die;
                 }
+            } 
+            else {
+                $message="Invalid/Incorrect Email or Password.";
+                $encodeJson = json_encode($message);
+                $fileName = 'jsonfile.json';
+                file_put_contents($fileName,$encodeJson);
+                //http_response_code(404);
+                //echo json_encode($message);
             }
-            //echo "Invalid/Incorrect Email or Password.";
-            $message="Invalid/Incorrect Email or Password.";
         }
         else{
             //echo "Invalid Information. Try again.";
             $message="Invalid Information. Try again.";
+            $encodeJson = json_encode($message);
+            $fileName = 'jsonfile.json';
+            file_put_contents($fileName,$encodeJson);
+            //http_response_code(400);
+            //jsonSend($message);
         }
     }
 ?>
@@ -81,7 +97,7 @@
     <div id = "formbox">
         <form method="post">
             <div style="font-size: 20px; margin: 12px; color: black; font-weight:bold;">Login</div>
-            <p><?php echo $message ?></p>
+            <p><?php echo $message;?></p>
             <p>
                 <label>UserID:</label>
                 <input id="textbox" type="text" name="userid"/>
@@ -99,4 +115,3 @@
     </div>
 </body>
 </html>
-
