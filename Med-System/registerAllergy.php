@@ -4,6 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -26,41 +27,29 @@ session_start();
                 $CondQueryRes1 = mysqli_query($conn, $conditionalQuery1);
 
                 $queryRes = "insert into can_have (Ingredient_Name,Gov_HealthCard_Num) values ('$Ingredient_Name','$healthcard')";
+                $DataArr['Allergy Info:'] = array(
+                    "Healthcard Number: " => $healthcard,
+                    "ingredient Name: " => $Ingredient_Name
+                );
+
                 //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                 mysqli_query($conn, $queryRes);
 
                 header("Location: viewAllergyDetails.php");
                 exit;
-
-//                 if (mysqli_num_rows($CondQueryRes1) > 0) {
-//                     $queryRes = "insert into can_have (Ingredient_Name,Gov_HealthCard_Num) values ('$Ingredient_Name','$healthcard')";
-//                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
-//                     mysqli_query($conn, $queryRes);
-//
-//                     header("Location: viewAllergyDetails.php");
-//                     exit;
-//                 }
-//                 else {
-// //                     $queryRes0 = "insert into drug/ingredient_allergies (Ingredient_Name, Drug/Ingredient_Alt, Drug/Ingredient_Usage) values ('$Ingredient_Name','$DrugIngredient_Alt', '$DrugIngredient_Usage')";
-// //                     mysqli_query($conn, $queryRes0);
-// //
-// //                     $queryRes = "insert into can_have (Ingredient_Name,Gov_HealthCard_Num) values ('$Ingredient_Name','$healthcard')";
-// //                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
-// //                     mysqli_query($conn, $queryRes);
-// //
-// //                     header("Location: viewAllergyDetails.php");
-// //                     exit;
-//                     $message = "Allergen does not exists, try again.";
-//                 }
             }
             else{
                 //echo "Gov. Health card already exists, try again.";
                 $message = "Gov. Health card does not exists, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "You must provide an allergen, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>
@@ -102,6 +91,7 @@ session_start();
             overflow: hidden;
             text-align: center;
             color: white;
+            margin-bottom: 20px;
         }
 
         .navigationBar a{
@@ -116,6 +106,29 @@ session_start();
 
         .navigationBar a:hover{
             background-color: lightgreen;
+        }
+
+        #buttonStuff{
+            background-color: #0BDA51;
+            color: black;
+            padding: 0.5rem;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 1px solid black;
+            cursor: pointer;
+        }
+
+        #formbox{
+            /*Reference for code used in vertical and horizontal aligment by user Mr Bullets: 
+                -> https://stackoverflow.com/questions/19461521/how-to-center-an-element-horizontally-and-vertically */
+            text-align: center;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 2px;
+            border: 3px solid black;
+            width: 25%;
+            padding: 5%;
         }
     </style>
 
@@ -136,7 +149,7 @@ session_start();
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient Registration</div>
                             <p><?php echo $message?></p>
                             <p>
-                                <label>Government Health Card Number:</label>
+                                <label>Government HC #:</label>
                                 <input type="text" id="textbox" name="healthcard"/>
                             </p>
                             <p>
@@ -144,7 +157,7 @@ session_start();
                                 <input type="text" id="textbox" name="Ingredient_Name"/>
                             </p>
 
-                            <input type="submit" value="Register"/>
+                            <input type="submit" value="Register" id="buttonStuff"/>
                             <br>
                     </form>
             </div>

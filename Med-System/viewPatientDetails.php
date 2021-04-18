@@ -4,6 +4,7 @@
 
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     $userDataSessions = isLoggedIn($conn);
 
@@ -110,6 +111,7 @@
 </html>
 
 <?php
+    $dataArr = array();
     //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
     //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
     if (isset($_POST['editButton'])) {
@@ -180,6 +182,22 @@
         $birthday = $PatientData['Day_Of_Birth'];
         $userid = $PatientData['UserID'];
 
+        $dataArr["Patient Details: "] = array(
+            "Government Healthcard Num: " => $healthcard,
+            "first name: " => $PatientData['First_Name'],
+            "last name: " => $PatientData['Last_Name'],
+            "COVID Status: " => $covidStat,
+            "Weight: " => $weight,
+            "height: " => $height,
+            "Preferred Language: " => $prefLang,
+            "Sex: " => $sex,
+            "Phone: " => $phone,
+            "Address: " => $Address,
+            "ProviderNotes: " => $ProviderNotes,
+            "Email: " => $email,
+            "birthday: " => $birthday,
+            "userid: " => $userid
+        );
         //checks to see if the email variable is null if it is assign it to be equal to none
         if($email == NULL){
             $email = "none";
@@ -228,7 +246,11 @@
         //checks to see if the query retrieved is not empty
         if(mysqli_num_rows($allergyQueryRes)>0){
             //loops through all the entries in the table to display all the allergies of the patient
+            $counter = 0; 
             while($row = mysqli_fetch_assoc($allergyQueryRes)){
+                $counter += 1;
+                $index = "Patient Allergy ".$counter;
+                $DataArr[$index] = array("Allergy To: " => $row['Ingredient_Name']);
                 $allergicTo = $row['Ingredient_Name'];
                 echo "<p style='text-align: center;  font-size: 16px;'>$allergicTo</p>";
             }        
@@ -236,6 +258,7 @@
         else {
             //else this means the patient has no allergies so display a message saying none.
             echo "<p style='text-align: center;  font-size: 16px;'>None</p>";
+            $dataArr["Patient Allergy: "] = array("message: " => "None.");
         }
 
         //displays the drug prescription section of the patient
@@ -247,7 +270,9 @@
         //checks to see if the query recieved is not empty
         if(mysqli_num_rows($drugPrescriptionQuery)>0){
             //if it isnt loops through all the patient's drug prescription entries, and prints it out onto the html
+            $counter = 0;
             while($row = mysqli_fetch_assoc($drugPrescriptionQuery)){
+                $counter += 1;
                 //saves the data from the table into these variables
                 $DIN = $row['DIN'];
                 $PharmLicenseNumber = $row['PharmLicense_Num'];
@@ -261,6 +286,20 @@
                 $AmountLastFilled = $row['Amount_Last_Filled'];
                 $DocLicenseNum = $row['DocLicense_Num'];
 
+                $dataArr["Patient Prescription ".$counter.": "] = array(
+                    "DIN: " => $row['DIN'],
+                    "PharmLicenseNumber: " => $row['PharmLicense_Num'],
+                    "PharmID: " => $row['PharmID'],
+                    "PrescriberName: " => $row['Prescriber_Name'],
+                    "RX_Number: " => $row['RX_Number'],
+                    "FillStat: " => $row['Fill_Status'],
+                    "Date_Recieved: " => $row['Date_Recieved'],
+                    "Instruction: " => $row['Instruction'],
+                    "DateLastFilled: " => $row['Date_Last_Filled'],
+                    "AmountLastFilled: " => $row['Amount_Last_Filled'],
+                    "DocLicenseNum: " => $row['DocLicense_Num']
+                );
+
                 //prints out the data saved in the variables into the html
                 echo "<p style='text-align: center;  font-size: 16px;'>Drug ID: $DIN</p>";
                 echo "<p style='text-align: center;  font-size: 16px;'>RX_Number: $RX_Number</p>";
@@ -270,6 +309,7 @@
         } 
         else {
             //else this means the patient has no current drug prescriptions, so displays that message to the html
+            $dataArr["Patient Prescription: "] = array("message"=>"No Drug Prescriptions.");
             echo "<p style='text-align: center;  font-size: 16px;'>No Drug Prescriptions.</p>";
         }
 
@@ -287,6 +327,12 @@
             $color="black";
             $depName = $DependentData['First_Name']." ".$DependentData['Last_Name'];
             $DepRelationship = $DependentData['Relationship'];
+            
+            $dataArr["Patient Dependent Info: "] = array(
+                "Dependent First Name: " => $DependentData['First_Name'],
+                "Dependent Last Name: " =>$DependentData['Last_Name'],
+                "Relationship: " => $DependentData['Relationship']
+            );
 
             //displays the information from the variables onto the html
             echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
@@ -294,6 +340,7 @@
         }
         else{
             //else this means that the patient has no dependents, so prints a message to the html about it
+            $dataArr["Patient Dependent Info: "] = array("Message:"=>"No Dependents.");
             echo "<p style='text-align: center;  font-size: 16px;'>No Dependents</p>";
         }
         
@@ -314,6 +361,13 @@
             $Start_Date = $InsuranceData['Start_Date'];
             $EndDate = $InsuranceData['End_Date'];
 
+            $dataArr["Patient Insurance Info: "] = array(
+                "policyNum: " => $InsuranceData['Policy_Number'],
+                "Insurance Company Name: " => $InsuranceData['Company'],
+                "Start_Date: " => $InsuranceData['Start_Date'],
+                "EndDate: " => $InsuranceData['End_Date']
+            );
+
             //displays the information stored in each variable onto the html
             echo "<p style='text-align: center;  font-size: 16px;'>Insurance Policy Number: $policyNum</p>";
             echo "<p style='text-align: center;  font-size: 16px;'>Insurance Company Name: $InsCompanyName</p>";
@@ -323,10 +377,15 @@
         else{
             //else this means the patient has no insurance so display a message about it.
             echo "<p style='text-align: center;  font-size: 16px;'>No insurance Plan</p>";
+            $dataArr["Patient Insurance Info: "] = array("Message: " => "No Insurance Plan.");
         }
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
         echo"<p style='text-align: center;  font-size: 16px;'>There was an problem retrieving this information.</p>";
+        $encodeJson = json_encode("There was an problem retrieving this information.");
+        file_put_contents($fileName,$encodeJson);
     }
+    $encodeJson = json_encode($dataArr);
+    file_put_contents($fileName,$encodeJson);
 ?>

@@ -13,6 +13,8 @@
     if(mysqli_num_rows($queryCheckResult) > 0) {
         $isPharm = true;
     }
+    $DataArr = array();
+    $fileName = 'jsonfile.json';
 ?>
 
 <!DOCTYPE html>
@@ -98,16 +100,6 @@
 </html>
 
 <?php
-    //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
-    //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
-    /* if($_SERVER['REQUEST_METHOD'] == "POST"){
-        $editChoice = $_POST['edit'];
-        if($editChoice == "PatientProfile"){
-            $_SESSION['Gov_HealthCard_Num'] = $drugDIN;
-            header("Location: editPatientProfile.php");
-            die;
-        }
-    } */
     //gets the query data from the sql database of the current selected drug in the drug profile table
     $queryAllergyGet = "select * from can_have where Gov_HealthCard_Num = '$patientHealthCardNum'";
     $queryAllergyRes = mysqli_query($conn, $queryAllergyGet);
@@ -117,31 +109,43 @@
         //if it isnt, then it fetches the data on that patient retrieved from the sql database
         $AllergyData = mysqli_fetch_assoc($queryAllergyRes);
         
-        //reference:
-        //php printing stuff: https://code-boxx.com/display-php-variables-in-html/
-        
-        //saving the following things into variables from the sql database
-        $color="black";
-        $Ingredient_Name = $AllergyData['Ingredient_Name'];
-        $Gov_HealthCard_Num = $AllergyData['Gov_HealthCard_Num'];
+        $counter = 0;
+        while($row = mysqli_fetch_assoc($queryAllergyRes)){
+            $counter += 1;
+            //reference:
+            //php printing stuff: https://code-boxx.com/display-php-variables-in-html/
+            
+            //saving the following things into variables from the sql database
+            $color="black";
+            $Ingredient_Name = $AllergyData['Ingredient_Name'];
+            $Gov_HealthCard_Num = $AllergyData['Gov_HealthCard_Num'];
 
-        $queryIngredientGet = "select * from drug/ingredient_allergies where Ingredient_Name = '$Ingredient_Name'";
-        $queryIngredientRes = mysqli_query($conn, $queryIngredientGet);
-        $IngredientData = mysqli_fetch_assoc($queryIngredientRes);
+            $queryIngredientGet = "select * from drug/ingredient_allergies where Ingredient_Name = '$Ingredient_Name'";
+            $queryIngredientRes = mysqli_query($conn, $queryIngredientGet);
+            $IngredientData = mysqli_fetch_assoc($queryIngredientRes);
 
-        $ingredientName = $IngredientData['Ingredient_Name'];
-        $ingredientAlternative = $IngredientData['Drug/Ingredient_Alt'];
-        $ingredientUsage = $IngredientData['Drug/Ingredient_Usage'];
+            $ingredientName = $IngredientData['Ingredient_Name'];
+            $ingredientAlternative = $IngredientData['Drug/Ingredient_Alt'];
+            $ingredientUsage = $IngredientData['Drug/Ingredient_Usage'];
 
-        //displays the data to the html
-        echo "<p style='text-align: center;  font-size: 16px;'>Drug Identification Number (DIN): $Gov_HealthCard_Num</p>";
-        echo "<p style='text-align: center;  font-size: 16px;'>Allergen Name: $Ingredient_Name</p>";
-        //echo "<p>Allergen Alternative: $ingredientAlternative</p>";
-        //echo "<p>Allergen Usage: $ingredientUsage</p>";
+            $index = 'Allergy '.$counter;
+            $DataArr[$index] = array(
+                "ingredient Name: " => $IngredientData['Ingredient_Name'],
+                "ingredient Alternative: " => $IngredientData['Drug/Ingredient_Alt'],
+                "ingredient Usage: " => $IngredientData['Drug/Ingredient_Usage']
+            );
 
+            //displays the data to the html
+            echo "<p style='text-align: center;  font-size: 16px;'>Drug Identification Number (DIN): $Gov_HealthCard_Num</p>";
+            echo "<p style='text-align: center;  font-size: 16px;'>Allergen Name: $Ingredient_Name</p>";
+            //echo "<p>Allergen Alternative: $ingredientAlternative</p>";
+            //echo "<p>Allergen Usage: $ingredientUsage</p>";  
+        }
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
         echo"<p style='text-align: center;  font-size: 16px;'>Patient $patientHealthCardNum does not have any recorded allergies.</p>";
+        $encodeJson = json_encode("Patient $patientHealthCardNum does not have any recorded allergies.");
+        file_put_contents($fileName,$encodeJson);
     }
 ?>

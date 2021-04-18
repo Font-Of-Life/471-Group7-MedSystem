@@ -4,6 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -42,28 +43,53 @@ session_start();
                         $queryRes = "insert into patient_profile (Gov_HealthCard_Num, First_Name, Last_Name, COVID_Test_Result, Weight, Height, Preferred_Language, Sex, Phone_Number, Address, Provider_Notes, Email, Day_Of_Birth, UserID) values ('$healthcardnum','$firstName','$lastName', '$covidStat', '$weight', '$height', '$prefLanguage', '$sex', '$phone', '$address','$providerNotes', '$email','$birthday','$techid')";
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         mysqli_query($conn, $queryRes);
-
+//(Gov_HealthCard_Num, First_Name, Last_Name, COVID_Test_Result, Weight, Height, Preferred_Language, Sex, Phone_Number, Address, Provider_Notes, Email, Day_Of_Birth, UserID) 
+//('$healthcardnum','$firstName','$lastName', '$covidStat', '$weight', '$height', '$prefLanguage', '$sex', '$phone', '$address','$providerNotes', '$email','$birthday','$techid'
+                        $dataArr["Patient Info: "] = array(
+                            "Government Healthcard Num: " => $healthcard,
+                            "first name: " => $firstName,
+                            "last name: " => $lastName,
+                            "COVID Status: " => $covidStat,
+                            "Weight: " => $weight,
+                            "height: " => $height,
+                            "Preferred Language: " => $prefLanguage,
+                            "Sex: " => $sex,
+                            "Phone: " => $phone,
+                            "Address: " => $address,
+                            "ProviderNotes: " => $providerNotes,
+                            "Email: " => $email,
+                            "birthday: " => $birthday,
+                            "userid: " => $techid
+                        );
                         header("Location: patientSearch.php");
                         exit;  
                     }
                     else {
                         //echo "userID does not exist, try again.";
                         $message = "userID does not exist, try again.";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }   
                 }
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "Gov. Health card already exists, try again.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "TechID, Phone number, health card number were not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "The only empty fields allowed are provider notes and email, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>
@@ -138,7 +164,7 @@ session_start();
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient Registration</div>
                             <p><?php echo $message?></p>
                             <p>
-                                <label>Government Health Card Number:</label>
+                                <label>Government HC #:</label>
                                 <input type="text" id="textbox" name="healthcard"/>
                             </p>
                             <p>
