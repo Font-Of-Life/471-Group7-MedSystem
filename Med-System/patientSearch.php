@@ -13,6 +13,7 @@
     //Stores the user's current session data in the variable userSessionData
     //isLoggedIn is a function defined LoginChecker.php as mentioned above, where the connection to the database is registered as $conn
     $userSessionData = isLoggedIn($conn);
+    $fileName = 'jsonfile.json';
 
     //send get request
     if (isset($_GET['details'])) {
@@ -158,7 +159,17 @@
                 <div class = "rowResult">
                 <?php 
                     //loops through all the entities in the query saved in the queryResult variable, and prints it into the html
+                    $DataArr = array();
                     while($row = mysqli_fetch_assoc($queryResult)){
+                        $index = 'patient '.$row['Gov_HealthCard_Num'];
+                        $DataArr[$index] = array(
+                            "Government Healthcard Num: " => $row['Gov_HealthCard_Num'],
+                            "COVID_Stat: " => $row['COVID_Test_Result'],
+                            "first name: " => $row['First_Name'],
+                            "Last name: "=> $row['Last_Name'],
+                            "Address: " => $row['Address'],
+                            "phone: " => $row['Phone_Number']
+                            );
                         // echo "#rows: ".mysqli_num_rows($row);
                         //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
                     
@@ -177,6 +188,8 @@
                 
                 <?php    
                 }
+                $encodeJson = json_encode($DataArr);
+                file_put_contents($fileName,$encodeJson);
                 ?>
 
                 </div>
@@ -185,7 +198,9 @@
                 //else this means no data was found in the database so it displays the message to the page. 
                 else {
                     echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
-                    //$message = "No Data in database about this category at the moment.";
+                    $message = "No Data in database about this category at the moment.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             }
             //else this means there is something in the field of the patient search text field, so checks if its numerical value
@@ -203,7 +218,17 @@
                 <div class = "rowResult">
                 <?php 
                     //loops through all the rows in the table saved in queryResult, and prints it out into the html
+                    $DataArr = array();
                     while($row = mysqli_fetch_assoc($queryResult)){
+                        $index = 'patient '.$row['Gov_HealthCard_Num'];
+                        $DataArr[$index] = array(
+                            "Government Healthcard Num: " => $row['Gov_HealthCard_Num'],
+                            "COVID_Stat: " => $row['COVID_Test_Result'],
+                            "first name: " => $row['First_Name'],
+                            "Last name: "=> $row['Last_Name'],
+                            "Address: " => $row['Address'],
+                            "phone: " => $row['Phone_Number']
+                            );
                         // echo "#rows: ".mysqli_num_rows($row);
                         //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
                     
@@ -222,6 +247,8 @@
                 
                 <?php    
                 }
+                $encodeJson = json_encode($DataArr);
+                file_put_contents($fileName,$encodeJson);
                 ?>
 
                 </div>
@@ -230,13 +257,17 @@
                 //if nothing is returned that means the user does not exist in the database, so display a message to the user about it
                 else {
                     echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database.</p>";
-                    //$message = "User not found in the database.";
+                    $message = "User not found in the database.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             //else if the patientsearch isnt numerical that means it is a string, and we dont allow it so we display a message to the user about it
             else {
                 echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Patient search only works for numerical values, try again.</p>";
-                //$message = "Patient search only works for numerical values, try again.";
+                $message = "Patient search only works for numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         }
         //else this means that the user chose either Positve, Negative, Or Pending for covid Status dropdown menu bar
@@ -255,8 +286,18 @@
                     ?>
                 <div class = "rowResult">
                 <?php 
+                    $DataArr = array();
                     //if it isnt empty, loop through all the entries in the table and prints it out to the html
                     while($row = mysqli_fetch_assoc($queryResult)){
+                        $index = 'patient '.$row['Gov_HealthCard_Num'];
+                        $DataArr[$index] = array(
+                            "Government Healthcard Num: " => $row['Gov_HealthCard_Num'],
+                            "COVID_Stat: " => $row['COVID_Test_Result'],
+                            "first name: " => $row['First_Name'],
+                            "Last name: "=> $row['Last_Name'],
+                            "Address: " => $row['Address'],
+                            "phone: " => $row['Phone_Number']
+                            );
                         // echo "#rows: ".mysqli_num_rows($row);
                         //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
                     
@@ -275,6 +316,8 @@
                 
                 <?php    
                 }
+                $encodeJson = json_encode($DataArr);
+                file_put_contents($fileName,$encodeJson);
                 ?>
 
                 </div>
@@ -282,7 +325,9 @@
                 } 
                 //else this means there are no patients/data in the database with that information, so prints a message to the user about it
                 else {
-                    //echo "No Data in database about this category at the moment.";
+                    $message = "No Data in database about this category at the moment.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                     echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
                 }
             } 
@@ -298,7 +343,17 @@
                     ?>
                 <div class = "rowResult">
                 <?php 
+                    $DataArr = array();
                     while($row = mysqli_fetch_assoc($queryResult)){
+                        $index = 'patient '.$row['Gov_HealthCard_Num'];
+                        $DataArr[$index] = array(
+                            "Government Healthcard Num: " => $row['Gov_HealthCard_Num'],
+                            "COVID_Stat: " => $row['COVID_Test_Result'],
+                            "first name: " => $row['First_Name'],
+                            "Last name: "=> $row['Last_Name'],
+                            "Address: " => $row['Address'],
+                            "phone: " => $row['Phone_Number']
+                            );
                         // echo "#rows: ".mysqli_num_rows($row);
                         //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
                     
@@ -316,6 +371,8 @@
                 
                 <?php    
                 }
+                $encodeJson = json_encode($DataArr);
+                file_put_contents($fileName,$encodeJson);
                 ?>
 
                 </div>
@@ -323,14 +380,18 @@
                 }
                 //else this means that there is no user with that government health card number in the database with that covid status, so display a message to the user about it. 
                 else {
-                    //echo "User not found in the database of this COVID category.";
+                    $message = "User not found in the database of this COVID category.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                     echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database of this COVID category.</p>";
                     
                 }
             }
             //else this means the text field for patient Search input was a string, and that search input only allows integers so display a message to the user about it. 
             else {
-                //echo "Patient search only works for numerical values, try again.";
+                $message = "Patient search only works for numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
                 echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Patient search only works for numerical values, try again.</p>";
             }
         }
