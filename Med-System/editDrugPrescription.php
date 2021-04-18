@@ -221,6 +221,7 @@ session_start();
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Edit</div>
                             <p><?php echo $pharmLicNum, 'Presecription for patient with health card number: ', $patientHealthCardNum?></p>
+                            <p><?php echo $message?></p>
                             <p>
                                 <label>Prescription Number:</label>
                                 <input type="text" id="textbox" name="rxNum"/>

@@ -155,7 +155,6 @@ session_start();
                     <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Patient <?php echo $healthcard?> Allergy Edit:</div>
                     <p><?php echo $message?></p>
                     <form method="post">
-                            <p><?php echo $message?></p>
                             <p>
                                 <label>Ingredient Name:</label>
                                 <input type="text" id="textbox" name="Ingredient_Name"/>

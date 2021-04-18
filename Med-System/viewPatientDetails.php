@@ -127,7 +127,7 @@
         else if($optionSelected == "Aller"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
-            header("Location: editDrugPrescription.php");
+            header("Location: editAllergyDetails.php");
             die;
         } 
         else {
