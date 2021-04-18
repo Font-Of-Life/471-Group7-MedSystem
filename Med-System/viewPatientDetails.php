@@ -11,6 +11,13 @@
     if($patientHealthCardNum == NULL){
         $patientHealthCardNum = isset($_GET['govID']) ? mysqli_real_escape_string($conn, $_GET['govID']) :  "";
     }
+
+    $idGetter = $userDataSessions['UserID'];
+    $queryChecker = "select * from pharmacist where PharmID = '$idGetter'";
+    $queryCheckResult = mysqli_query($conn, $queryChecker);
+    if(mysqli_num_rows($queryCheckResult) > 0) {
+        $isPharm = true;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -86,8 +93,10 @@
                     <option value="<?php echo "PProf".$patientHealthCardNum;?>">Patient Profile</option>
                     <option value="<?php echo "Depen".$patientHealthCardNum;?>">Dependent</option>
                     <option value="<?php echo "Insur".$patientHealthCardNum;?>">Insurance</option>
+                    <?php if($isPharm){?>
                     <option value="<?php echo "DrugP".$patientHealthCardNum;?>">Drug Prescription</option>
                     <option value="<?php echo "Aller".$patientHealthCardNum;?>">Allergies</option>
+                    <?php }?>
                 </select>
 
                 <input id = "buttonStuff" type="submit" name="editButton" value="Edit">
@@ -108,6 +117,10 @@
         $hcNum = substr(($_POST['edit']),5);
 
         $_SESSION['HC'] = $hcNum;
+        $checkid = $userDataSessions['UserID'];
+        
+        $checkQuery = "select * from pharmacist where PharmID = '$checkid'";
+        $checkQueryResult = mysqli_query($conn, $checkQuery);
         if($optionSelected == "PProf"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
@@ -127,12 +140,13 @@
         else if($optionSelected == "Aller"){
             //set session variables for the property that was clicked
             // then redirect to viewProperty page
+
             header("Location: editAllergyDetails.php");
             die;
         } 
         else {
-            header("Location: editDrugPrescription.php");
-            die;
+              header("Location: editDrugPrescription.php");
+              die;    
         }
 		
     }

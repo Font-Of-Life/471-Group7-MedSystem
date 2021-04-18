@@ -10,6 +10,12 @@
     if($healthcard == NULL){
         $healthcard = $_GET['Gov_HealthCard_Num'];
     }
+    $idGetter = $userDataSessions['UserID'];
+    $queryChecker = "select * from pharmacist where PharmID = '$idGetter'";
+    $queryCheckResult = mysqli_query($conn, $queryChecker);
+    if(mysqli_num_rows($queryCheckResult) > 0) {
+        $isPharm = true;
+    }  
     
 ?>
 
@@ -66,8 +72,11 @@
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
             <a href="drugSearch.php">Drug Search</a>
+            <?php if($isPharm){
+                ?>
             <a href="registerDrug.php">Add Drug Profile</a>
             <a href="registerPrescriptions.php">Add Prescriptions</a>
+            <?php } ?>
         </div>
         <div>
             <center><h1>Patient <?php echo $drugDIN?> Prescription: </h1></center>
