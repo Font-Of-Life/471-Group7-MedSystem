@@ -7,6 +7,12 @@
 
     $userDataSessions = isLoggedIn($conn);
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
+    $idGetter = $userDataSessions['UserID'];
+    $queryChecker = "select * from pharmacist where PharmID = '$idGetter'";
+    $queryCheckResult = mysqli_query($conn, $queryChecker);
+    if(mysqli_num_rows($queryCheckResult) > 0) {
+        $isPharm = true;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -72,15 +78,19 @@
             <a href="patientSearch.php">Patient Search</a>
             <a href="registerPatient.php">Add Patient Profile</a>
             <a href="drugSearch.php">Drug Search</a>
+            <?php if($isPharm){?>
             <a href="registerDrug.php">Add Drug Profile</a>
+            <?php }?>
         </div>
         <div>
-            <center><h1>Drug <?php echo $drugDIN?></h1></center>
+            <center><h1>Allergy Details<?php if($drugDIN != NULL){echo " of DIN: ".$drugDIN;}?></h1></center>
         </div>
         <div>
             <form id = "formbox">
                 <a href="viewPatientDetails.php" id = "buttonStuff">Back to Patient Profile</a>
+                <?php if($isPharm){?>
                 <a href="registerAllergy.php" id = "buttonStuff">Add an Allergy Record</a>
+                <?php }?>
             </form>
 
         </div>
