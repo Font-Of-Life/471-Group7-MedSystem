@@ -86,16 +86,8 @@
 </html>
 
 <?php
-    //does nothing so far/doesnt work, figure out how to get the edit button to work corresponding to each dropdown option
-    //the html section for it just control f the word "edit" in this document and that section corresponds to the one being responded by this
-    /* if($_SERVER['REQUEST_METHOD'] == "POST"){
-        $editChoice = $_POST['edit'];
-        if($editChoice == "PatientProfile"){
-            $_SESSION['Gov_HealthCard_Num'] = $patientHealthCardNum;
-            header("Location: editPatientProfile.php");
-            die;
-        }
-    } */
+    $fileName = 'jsonfile.json';
+    $dataArr = array();
     // 	Policy_Number	Policy_Holder_Health_Num	Company	Start_Date	End_Date
     //gets the query data from the sql database of the current selected patient in the patient profile table 
     $queryPatientGet = "select * from insurance_plan where Policy_Holder_Health_Num = '$patientHealthCardNum'";
@@ -114,6 +106,15 @@
         $Start_Date = $InsuranceData['Start_Date'];
         $End_Date = $InsuranceData['End_Date'];
 
+        $dataArr["Patient Insurance Info: "] = array(
+            "policyNum: " => $InsuranceData['Policy_Number'],
+            "Insurance Company Name: " => $InsuranceData['Company'],
+            "Start_Date: " => $InsuranceData['Start_Date'],
+            "EndDate: " => $InsuranceData['End_Date']
+        );
+        $encodeJson = json_encode($dataArr);
+        file_put_contents($fileName,$encodeJson);
+
         //displays the information from the variables onto the html
         echo "<p style='text-align: center;  font-size: 16px;'>Policy_Number: $Policy_Number</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Policy Holder Health Card Number: $Policy_Holder_Health_Num</p>";
@@ -124,5 +125,7 @@
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
         echo"<p style='text-align: center;  font-size: 16px;'>No Insurance Information</p>";
+        $encodeJson = json_encode("No Insurance Information");
+        file_put_contents($fileName,$encodeJson);
     }
 ?>

@@ -4,6 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -42,27 +43,54 @@ session_start();
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         mysqli_query($conn, $queryRes);
 
+                        //'$DINum', '$drugName', '$drugGenericName', '$drugPackSize', '$drugSellPrice', '$drugBuyPrice', '$drugInventory', '$drugSupplier', '$drugImage', '$drugSchedule', '$drugStrength', '$drugCreation', '$userid'
+                        //"insert into drug_profile (DIN, Drug_Name, Drug_Generic_Name, Pack_Size, Sell_Price, Bought_Price, Current_Inventory, Supplier, Drug_Image, Schedule, Strength, Date_Created, UserID)
+                        $dataArr = array(
+                            "DIN: " =>$DINum, 
+                            "Drug_Name"=>$drugName,
+                            "Drug_Generic_Name"=>$drugGenericName, 
+                            "Pack_Size"=>$drugPackSize, 
+                            "Sell_Price"=>$drugSellPrice, 
+                            "Bought_Price"=>$drugBuyPrice, 
+                            "Current_Inventory"=>$drugInventory, 
+                            "Supplier"=>$drugSupplier, 
+                            "Drug_Image"=>$drugImage, 
+                            "Schedule"=>$drugSchedule, 
+                            "Strength"=>$drugStrength, 
+                            "Date_Created"=>$drugCreation, 
+                            "UserID"=>$userid
+                        );
+                        $encodeJson = json_encode($dataArr);
+                        file_put_contents($fileName,$encodeJson);
                         header("Location: drugSearch.php");
                         exit;  
                     }
                     else {
                         //echo "userID does not exist, try again.";
                         $message = "userID does not exist, try again.";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }   
                 }
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "DIN already exists, try again.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "DIN, Pack Size, Sell Price, Buy Price, Inventory, Drud Schedule and Drug Strength were not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "The only empty fields allowed is Drug Image, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>

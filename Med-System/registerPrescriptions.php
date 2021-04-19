@@ -7,7 +7,7 @@ session_start();
 
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
     $pharmID = $_SESSION['UserID'];
-
+    $fileName = 'jsonfile.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -55,25 +55,35 @@ session_start();
 
                 if(mysqli_num_rows($CondQueryRes6)>0){
                     $message = "rx Number already exist, cannot add duplicate prescription";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
                 else{
                     $erro = 0;
                     if(mysqli_num_rows($CondQueryRes) <= 0){
                         $message .= "Drug does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
                     }
                     if((mysqli_num_rows($queryPatientRes) <= 0)){
                         $message .= "Patient does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
 
                     }
 
                     if((!empty($docLicNum) && (mysqli_num_rows($CondQueryRes3) <= 0))){
                         $message .= "Doctor License number does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
                     }
                     if((!empty($prescibeName) && (mysqli_num_rows($CondQueryRes5) <= 0)) ){
                         $message .= "Prescriber does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
                     }
 
@@ -90,16 +100,34 @@ session_start();
                         $lastFillDate = !empty($lastFillDate) ? "'$lastFillDate'" : "NULL";
                         $lastFillQuantity = !empty($lastFillQuantity) ? "'$lastFillQuantity'" : "NULL";
 
-
-
                         //register the following values into the prescrption table
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
+                        //('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)"
+                        $dataArr["Patient Prescription info: "] = array(
+                            "DIN: " => $DIN,
+                            "PharmLicenseNumber: " => $pharmLicNum,
+                            "PharmID: " => $pharmID,
+                            "DocLicenseNum: " => $docLicNum,
+                            "PrescriberName: " => $prescibeName,
+                            "RX_Number: " => $rxNum,
+                            "FillStat: " => $fillStatus,
+                            "Date_Recieved: " => $recDate,
+                            "Instruction: " => $instruct,
+                            "DateLastFilled: " => $lastFillDate,
+                            "AmountLastFilled: " => $lastFillQuantity
+                        );
+                        $encodeJson = json_encode($dataArr);
+                        file_put_contents($fileName,$encodeJson);
+
                         mysqli_query($conn, $queryRes);
                         header("Location: viewPatientDetails.php");
                         exit;
-                    }else{
+                    }
+                    else{
                         $message = "Error in submitting data";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }
 
 
@@ -108,11 +136,15 @@ session_start();
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Prescription Number, DIN, Health Care card Number were not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "Prescription Number, DIN, Health Care card Number can't be empty";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>
@@ -213,7 +245,9 @@ session_start();
                     <form method="post">
                             <div style="font-size: 22px; margin: 14px; color: black; font-weight:bold;">Prescription Registration</div>
                             <p><b><?php echo $pharmLicNum, 'Prescription for patient with health card number: ', $patientHealthCardNum?></b></p>
-<!--                             <p>
+                            <p><?php echo $message;?></p>
+
+                            <!--                             <p>
                                 <label>Health Care Card Number:</label>
                                 <input type="text" id="textbox" name="healthcard"/>
                             </p>

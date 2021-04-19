@@ -4,7 +4,9 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
-
+    $fileName = 'jsonfile.json';
+    $dataArr = array();
+    
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // collect data from the post variables in the html section below
@@ -29,22 +31,37 @@ session_start();
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
 
+                    $dataArr["Patient Dependent Info: "] = array(
+                        "Parent Health Card Number: " => $Parent_HealthCard_Num,
+                        "Dependent First Name: " => $First_Name,
+                        "Dependent Last Name: " =>$Last_Name,
+                        "Relationship: " => $Relationship
+                    );
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
+
                     header("Location: viewDependentsDetails.php");
                     exit;
                 }
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "Gov. Health card does not exists, try again.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Health card only takes integer, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "You must provide the Parent health card number and relationship, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>

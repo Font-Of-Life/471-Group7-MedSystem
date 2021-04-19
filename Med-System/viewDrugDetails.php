@@ -4,6 +4,7 @@
 
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     $userDataSessions = isLoggedIn($conn);
     $drugDIN = $_SESSION['DIN'];
@@ -112,24 +113,45 @@
         if($drugCreation == NULL){
             $drugCreation = "none";
         }
-        
+
+        $dataArr["Patient Prescription ".$counter.": "] = array(
+            "DINum" => $DrugData['DIN'],
+            "drugName" => $DrugData['Drug_Name'],
+            "drugGenericName" => $DrugData['Drug_Generic_Name'],
+            "drugPackSize" => $DrugData['Pack_Size'],
+            "drugSellPrice" => $DrugData['Sell_Price'],
+            "drugBuyPrice" => $DrugData['Bought_Price'],
+            "drugInventory" => $DrugData['Current_Inventory'],
+            "drugSupplier" => $DrugData['Supplier'],
+            "drugImage" => $DrugData['Drug_Image'],
+            "drugSchedule" => $DrugData['Schedule'],
+            "drugStrength" => $DrugData['Strength'],
+            "drugCreation" => $DrugData['Date_Created'],
+            "userid" => $DrugData['UserID']
+        );
+
+        $encodeJson = json_encode($dataArr);
+        file_put_contents($fileName,$encodeJson);
+
         //displays the data to the html
-        echo "<p>Drug Identification Number (DIN): $DINum</p>";
-        echo "<p>Drug Name: $drugName</p>";
-        echo "<p>Generic Name: $drugGenericName</p>";
-        echo "<p>Drug Strength: $drugStrength</p>";
-        echo "<p>Drug Schedule: $drugSchedule</p>";
-        echo "<p>Drug Pack Size: $drugPackSize</p>";
-        echo "<p>Drug Sell Price: $drugSellPrice</p>";
-        echo "<p>Drug Bought Price: $drugBuyPrice</p>";
-        echo "<p>Current Inventory: $drugInventory</p>";
-        echo "<p>Supplier: $drugSupplier</p>";
-        echo "<p>Drug Image: $drugImage</p>";
-        echo "<p>Drug Profile Created: $drugCreation</p>";
-        echo "<p>UserID of User Who created this drug profile: $userid</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Identification Number (DIN): $DINum</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Name: $drugName</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Generic Name: $drugGenericName</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Strength: $drugStrength</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Schedule: $drugSchedule</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Pack Size: $drugPackSize</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Sell Price: $drugSellPrice</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Bought Price: $drugBuyPrice</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Current Inventory: $drugInventory</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Supplier: $drugSupplier</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Image: $drugImage</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>Drug Profile Created: $drugCreation</p>";
+        echo "<p style='text-align: center;  font-size: 16px;>UserID of User Who created this drug profile: $userid</p>";
     } 
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
-        echo"<p>There was an problem retrieving this information.</p>";
+        echo"<p style='text-align: center;  font-size: 16px;>There was an problem retrieving this information.</p>";
+        $encodeJson = json_encode("There was an problem retrieving this information.");
+        file_put_contents($fileName,$encodeJson);
     }
 ?>

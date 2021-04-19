@@ -4,6 +4,8 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
+    $dataArr = array();
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -30,22 +32,38 @@ session_start();
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
 
+                    $dataArr["Patient Insurance Info ".$Policy_Holder_Health_Num] = array(
+                        "Policy Holder Health Card Number: " => $Policy_Holder_Health_Num,
+                        "policyNum: " => $Policy_Number,
+                        "Insurance Company Name: " => $Company,
+                        "Start_Date: " => $Start_Date,
+                        "EndDate: " => $End_Date
+                    );
+
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
                     header("Location: viewInsuranceDetails.php");
                     exit;
                 }
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "Gov. Health card does not exists, try again.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Health card only takes integer, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "You must provide the Policy holder's health card number and the Policy Number, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>

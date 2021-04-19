@@ -26,6 +26,7 @@ session_start();
                 $CondQueryRes = $stmt->get_result();
                     
                 if(mysqli_num_rows($CondQueryRes) <= 0){
+                    //creates a new array for the json file, and registers the data saved from here into it
                     $DataArr['users data: '] = array("UserID: " => $techid, "Password: "=> $password, "first_name: " => $firstName, "last_name: " => $lastName, "Phone: "=> $phone);
                     
                     //register the following values into the user table
@@ -38,8 +39,11 @@ session_start();
                     //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                     mysqli_query($conn, $queryRes);
 
+                    //creates a new array for the json file, and registers the data saved from here into it
                     $DataArr['Technician data:'] = array("TechID: " => $techid, "Password: " => $password, "First_name: " => $firstName, "Last_name: " => $lastName, "phone: "=> $phone);
+                    //encodes it in the format of a json file
                     $encodeJson = json_encode($DataArr);
+                    //adds it to the json file provided
                     file_put_contents($fileName,$encodeJson);
 
                     // redirect user to login page
@@ -49,12 +53,14 @@ session_start();
                 else{
                     //echo "TechID already exists. Enter a different value.";
                     $message = "TechID already exists. Enter a different value.";
+                    //encodes the message an sends it to the json file
                     $encodeJson = json_encode($message);
                     file_put_contents($fileName,$encodeJson);
                 }
             } else {
                 //echo "TechID or Phone number were not numerical values, try again.";
                 $message = "TechID or Phone number were not numerical values, try again.";
+                //encodes the message an sends it to the json file
                 $encodeJson = json_encode($message);
                 file_put_contents($fileName,$encodeJson);
             }
@@ -63,6 +69,7 @@ session_start();
         else {
             //echo "Cannot have a empty field, try again.";
             $message = "Cannot have a empty field, try again.";
+            //encodes the message an sends it to the json file
             $encodeJson = json_encode($message);
             file_put_contents($fileName,$encodeJson);
         }
