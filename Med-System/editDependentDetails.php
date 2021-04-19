@@ -4,6 +4,7 @@
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile2.json';
     
     $userDataSessions = isLoggedIn($conn);
     //placeholder document for now
@@ -33,12 +34,28 @@
                     //$sqlQuery = "UPDATE `patient_profile` SET `Weight` = ?, `Height` = ?, `Address` = ?, `Provider_Notes` = ?, `Email` = ?, `COVID_Test_Result` = $covidStat, `Phone` = $phone, WHERE `patient_profile`.`Gov_HealthCard_Num` = $healthcard";
                     mysqli_query($conn, $sqlQuery);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+
+                    $dataArr["Patient ".$healthcard." Updated Dependent Info: "] = array(
+                        "Dependent First Name: " => $First_Name,
+                        "Dependent Last Name: " =>$Last_Name,
+                        "Relationship: " => $Relationship
+                    );
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
                     header("Location: viewPatientDetails.php");
                     exit;
                 }
                 else{
                     $sqlQuery = "insert into `dependent` (First_Name, Last_Name, Parent_HealthCard_Num, Relationship) values ('$First_Name','$Last_Name','$healthcard','$Relationship')";
                     mysqli_query($conn, $sqlQuery);
+                    $dataArr["Patient ".$healthcard." Updated Dependent Info: "] = array(
+                        "Parent HealthCard Number: " => $healthcard,
+                        "Dependent First Name: " => $First_Name,
+                        "Dependent Last Name: " =>$Last_Name,
+                        "Relationship: " => $Relationship
+                    );
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
                     header("Location: viewPatientDetails.php");
                     exit;
@@ -47,11 +64,15 @@
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Phone number is not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "No changes recorded, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>

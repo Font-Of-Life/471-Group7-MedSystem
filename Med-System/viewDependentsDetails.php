@@ -4,6 +4,7 @@
 
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile.json';
 
     $userDataSessions = isLoggedIn($conn);
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
@@ -101,6 +102,14 @@
         $depName = $DependentData['First_Name']." ".$DependentData['Last_Name'];
         $DepRelationship = $DependentData['Relationship'];
 
+        $dataArr["Patient Dependent Info: "] = array(
+            "Dependent First Name: " => $DependentData['First_Name'],
+            "Dependent Last Name: " =>$DependentData['Last_Name'],
+            "Relationship: " => $DependentData['Relationship']
+        );
+        $encodeJson = json_encode($dataArr);
+        file_put_contents($fileName,$encodeJson);
+
         //displays the information from the variables onto the html
         echo "<p style='text-align: center;  font-size: 16px;'>Dependent Name: $depName</p>";
         echo "<p style='text-align: center;  font-size: 16px;'>Dependent Relationship: $DepRelationship</p>";
@@ -108,5 +117,7 @@
     else {
         //else this means something has happened with that patient's data, so display a error message regarding not able to find it.
         echo"<p style='text-align: center;  font-size: 16px;'>No Dependents</p>";
+        $encodeJson = json_encode("No Dependents.");
+        file_put_contents($fileName,$encodeJson);
     }
 ?>

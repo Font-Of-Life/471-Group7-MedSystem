@@ -4,6 +4,7 @@
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile2.json';
     
     $userDataSessions = isLoggedIn($conn);
     //placeholder document for now
@@ -34,6 +35,13 @@
                     //$sqlQuery = "UPDATE `patient_profile` SET `Weight` = ?, `Height` = ?, `Address` = ?, `Provider_Notes` = ?, `Email` = ?, `COVID_Test_Result` = $covidStat, `Phone` = $phone, WHERE `patient_profile`.`Gov_HealthCard_Num` = $healthcard";
                     mysqli_query($conn, $sqlQuery);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+
+                    $dataArr["Patient ".$Policy_Holder_Health_Num." Updated Insurance: "] = array(
+                        "policyNum: " => $Policy_Number,
+                        "Insurance Company Name: " => $Company,
+                        "Start_Date: " => $Start_Date,
+                        "EndDate: " => $End_Date
+                    );
                     header("Location: viewPatientDetails.php");
                     exit;
 
@@ -42,6 +50,17 @@
                     $sqlQuery = "insert into `insurance_plan` (Policy_Number, Policy_Holder_Health_Num, Company, Start_Date, End_Date) values ('$Policy_Number','$healthcard','$Company','$Start_Date', '$End_Date')";
                     mysqli_query($conn, $sqlQuery);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+
+                    $dataArr["Patient ".$Policy_Holder_Health_Num." Updated Insurance: "] = array(
+                        "Policy Health Card Number: " => $Policy_Holder_Health_Num,
+                        "policyNum: " => $Policy_Number,
+                        "Insurance Company Name: " => $Company,
+                        "Start_Date: " => $Start_Date,
+                        "EndDate: " => $End_Date
+                    );
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
+
                     header("Location: viewPatientDetails.php");
                     exit;
                 }
@@ -49,13 +68,16 @@
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Policy num is not a number.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "No changes recorded, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
-        mysqli_stmt_close($check);
     }
 ?>
 <!DOCTYPE html>

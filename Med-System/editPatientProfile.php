@@ -4,6 +4,7 @@
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile2.json';
     
     $userDataSessions = isLoggedIn($conn);
     //placeholder document for now
@@ -37,37 +38,41 @@
                     //$sqlQuery = "UPDATE `patient_profile` SET `Weight` = ?, `Height` = ?, `Address` = ?, `Provider_Notes` = ?, `Email` = ?, `COVID_Test_Result` = $covidStat, `Phone` = $phone, WHERE `patient_profile`.`Gov_HealthCard_Num` = $healthcard";
                     mysqli_query($conn, $sqlQuery);
                     $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+                    $dataArr["Patient Updated Details: "] = array(
+                        "COVID Status: " => $covidStat,
+                        "Weight: " => $weight,
+                        "height: " => $height,
+                        "Phone: " => $phone,
+                        "Address: " => $Address,
+                        "ProviderNotes: " => $ProviderNotes,
+                        "Email: " => $email,
+                    );
+                    $encodeJson = json_encode($dataArr);
+                    file_put_contents($fileName,$encodeJson);
                     header("Location: viewPatientDetails.php");
                     exit;
-                    /* if($check = mysqli_prepare($conn, $sqlQuery)){
-                        mysqli_stmt_bind_param($check, "sssss", $weight, $height, $address, $providerNotes, $email);
-                        mysqli_stmt_execute($check);
-
-                        mysqli_query($conn, $sqlQuery);
-                        $_SESSION['Gov_HealthCard_Num'] = $healthcard;
-                        header("Location: viewPatientDetails.php");
-                        exit;
-
-                    } else {
-                        $message = "Invalid input try again.";
-                    } */
                     
                 }
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "Info could not be updated. Patient not found in database.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
             } 
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Phone number is not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "The only empty fields allowed are provider notes and email, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
-        mysqli_stmt_close($check);
     }
 ?>
 <!DOCTYPE html>

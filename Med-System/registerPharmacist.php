@@ -49,7 +49,12 @@ session_start();
                         //register the following values into the user table
                         $queryRes = "insert into users (UserID, First_Name, Last_Name, Phone, Password) values ('$pharmid','$firstName','$lastName', '$phone','$password')";
                         
-                        $DataArr['users data: '] = array("UserID: " => $pharmid, "Password: "=> $password, "first_name: " => $firstName, "last_name: " => $lastName, "Phone: "=> $phone);
+                        $DataArr['users data: '] = array(
+                            "UserID: " => $pharmid,
+                            "Password: "=> $password,
+                            "first_name: " => $firstName,
+                            "last_name: " => $lastName, 
+                            "Phone: "=> $phone);
                         //insert the following variable queryRes into the user table in the sql Server to update the database in the SQL server
                         mysqli_query($conn, $queryRes);
 

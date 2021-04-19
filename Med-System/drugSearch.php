@@ -1,7 +1,7 @@
 <?php 
     //checks to see the user is logged in
     session_start();
-
+    $fileName = "jsonfile.json";
     /*
     include the following files:
         -> connections.php is used for purpose of $conn to verify connections to server and database
@@ -130,7 +130,23 @@
             <div class = "rowResult">
             <?php
                 //loops through all the entities in the query saved in the queryResult variable, and prints it into the html
+                $counter = 0;
+                $DataArr = array();
                 while($row = mysqli_fetch_assoc($queryResult)){
+                    $counter +=1;
+                    $dataArr["Patient Prescription ".$counter.": "] = array(
+                        "DIN: " => $row['DIN'],
+                        "PharmLicenseNumber: " => $row['PharmLicense_Num'],
+                        "PharmID: " => $row['PharmID'],
+                        "PrescriberName: " => $row['Prescriber_Name'],
+                        "RX_Number: " => $row['RX_Number'],
+                        "FillStat: " => $row['Fill_Status'],
+                        "Date_Recieved: " => $row['Date_Recieved'],
+                        "Instruction: " => $row['Instruction'],
+                        "DateLastFilled: " => $row['Date_Last_Filled'],
+                        "AmountLastFilled: " => $row['Amount_Last_Filled'],
+                        "DocLicenseNum: " => $row['DocLicense_Num']
+                    );
                     // echo "#rows: ".mysqli_num_rows($row);
                     //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
 
@@ -150,6 +166,8 @@
 
                 <?php
                 }
+                $encodeJson = json_encode($DataArr);
+                file_put_contents($fileName,$encodeJson);
             ?>
 
             </div>
@@ -159,6 +177,8 @@
             else {
                 echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>No Data in database about this category at the moment.</p>";
                 //$message = "No Data in database about this category at the moment.";
+                $encodeJson = json_encode("No Data in database about this category at the moment.");
+                file_put_contents($fileName,$encodeJson);
             }
         }
         else if(is_numeric($drugSearch)) {
@@ -173,7 +193,23 @@
             <div class = "rowResult">
             <?php
                 //loops through all the rows in the table saved in queryResult, and prints it out into the html
+                $DataArr = array();
+                $counter = 0;
                 while($row = mysqli_fetch_assoc($queryResult)){
+                    $counter +=1;
+                    $dataArr["Patient Prescription ".$counter.": "] = array(
+                        "DIN: " => $row['DIN'],
+                        "PharmLicenseNumber: " => $row['PharmLicense_Num'],
+                        "PharmID: " => $row['PharmID'],
+                        "PrescriberName: " => $row['Prescriber_Name'],
+                        "RX_Number: " => $row['RX_Number'],
+                        "FillStat: " => $row['Fill_Status'],
+                        "Date_Recieved: " => $row['Date_Recieved'],
+                        "Instruction: " => $row['Instruction'],
+                        "DateLastFilled: " => $row['Date_Last_Filled'],
+                        "AmountLastFilled: " => $row['Amount_Last_Filled'],
+                        "DocLicenseNum: " => $row['DocLicense_Num']
+                    );
                     // echo "#rows: ".mysqli_num_rows($row);
                     //echo $row['First_Name']." ".$row['Last_Name']." Address: ".$row['Address']." ".$row['COVID_Test_Result']." Phone:".$row['Phone_Number'].'\n';
 
@@ -192,6 +228,8 @@
 
             <?php
             }
+            $encodeJson = json_encode($DataArr);
+            file_put_contents($fileName,$encodeJson);
             ?>
 
             </div>
@@ -201,11 +239,15 @@
             else {
                 echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>User not found in the database.</p>";
                 //$message = "User not found in the database.";
+                $encodeJson = json_encode("User not found in the database.");
+                file_put_contents($fileName,$encodeJson);
             }
         }
         else {
             echo "<p style='text-align: center; font-weight: bold; font-size: 16px;'>Drug search only works for numerical values, please give the DIN and try again.</p>";
-            //$message = "Patient search only works for numerical values, try again.";
+            $message = "Patient search only works for numerical values, try again.";
+            $encodeJson = json_encode("Drug search only works for numerical values, please give the DIN and try again.");
+            file_put_contents($fileName,$encodeJson);
         }
     ?>
     </form>

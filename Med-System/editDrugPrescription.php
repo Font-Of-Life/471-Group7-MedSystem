@@ -4,6 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
+    $fileName = 'jsonfile2.json';
 
     $patientHealthCardNum = $_SESSION['HC'];
     $pharmID = $_SESSION['UserID'];
@@ -55,25 +56,34 @@ session_start();
 
                 if(mysqli_num_rows($CondQueryRes6)>0){
                     $message = "rx Number already exist, cannot add duplicate prescription";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 }
                 else{
-                    $erro = 0;
+                    $error = 0;
                     if(mysqli_num_rows($CondQueryRes) <= 0){
                         $message .= "Drug does not exist, try again.\n";
                         $error=1;
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }
                     if((mysqli_num_rows($queryPatientRes) <= 0)){
                         $message .= "Patient does not exist, try again.\n";
                         $error=1;
-
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }
 
                     if((!empty($docLicNum) && (mysqli_num_rows($CondQueryRes3) <= 0))){
                         $message .= "Doctor License number does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
                     }
                     if((!empty($prescibeName) && (mysqli_num_rows($CondQueryRes5) <= 0)) ){
                         $message .= "Prescriber does not exist, try again.\n";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                         $error=1;
                     }
 
@@ -97,10 +107,41 @@ session_start();
                         $checkQuery = "select * from drug_prescription where Patient_HeathCard_Num = '$patientHealthCardNum'";
                         $getCheckQuery = mysqli_query($conn, $checkQuery);
                         if(mysqli_num_rows($getCheckQuery) > 0){
+                            $dataArr["Patient Prescription ".$counter.": "] = array(
+                                "DIN: " => $DINum,
+                                "PharmLicenseNumber: " => $pharmLicNum,
+                                "PharmID: " => $pharmID,
+                                "PrescriberName: " => $prescibeName,
+                                "RX_Number: " => $rxNum,
+                                "FillStat: " => $fillStatus,
+                                "Date_Recieved: " => $recDate,
+                                "Instruction: " => $instruct,
+                                "DateLastFilled: " => $lastFillDate,
+                                "AmountLastFilled: " => $lastFillQuantity,
+                                "DocLicenseNum: " => $docLicNum
+                            );
+                            $encodeJson = json_encode($dataArr);
+                            file_put_contents($fileName,$encodeJson);
                             $queryRes = "update drug_prescription set PharmLicense_Num = '$pharmLicNum', PharmID ='$pharmID', DocLicense_Num = '$docLicNum', Prescriber_Name = '$prescibeName', DIN = '$DINum', RX_Number = '$rxNum', Fill_Status = '$fillStatus', Date_Recieved = '$recDate' , Instruction = '$instruct', Date_Last_Filled = '$lastFillDate', Amount_Last_Filled = '$lastFillQuantity' where Patient_HealthCard_Num ='$patientHealthCardNum'";
                             mysqli_query($conn, $queryRes);
                         }
                         else{
+                            $dataArr["Patient Prescription ".$counter.": "] = array(
+                                "DIN: " => $DINum,
+                                "PharmLicenseNumber: " => $pharmLicNum,
+                                "PharmID: " => $pharmID,
+                                "PrescriberName: " => $prescibeName,
+                                "RX_Number: " => $rxNum,
+                                "FillStat: " => $fillStatus,
+                                "Date_Recieved: " => $recDate,
+                                "Instruction: " => $instruct,
+                                "DateLastFilled: " => $lastFillDate,
+                                "AmountLastFilled: " => $lastFillQuantity,
+                                "DocLicenseNum: " => $docLicNum
+                            );
+                            $encodeJson = json_encode($dataArr);
+                            file_put_contents($fileName,$encodeJson);
+
                             $queryRes = "insert into drug_prescription (Patient_HealthCard_Num, PharmLicense_Num, PharmID, DocLicense_Num, Prescriber_Name, DIN, RX_Number, Fill_Status, Date_Recieved, Instruction, Date_Last_Filled, Amount_Last_Filled) values ('$patientHealthCardNum', $pharmLicNum, $pharmID, $docLicNum, $prescibeName, '$DINum', '$rxNum', '$fillStatus', $recDate,'$instruct', $lastFillDate, $lastFillQuantity)";
                             mysqli_query($conn, $queryRes);
                         }
@@ -109,6 +150,8 @@ session_start();
                         exit;
                     }else{
                         $message = "Error in submitting data";
+                        $encodeJson = json_encode($message);
+                        file_put_contents($fileName,$encodeJson);
                     }
 
 
@@ -117,11 +160,15 @@ session_start();
             else {
                 //echo "TechID, Phone number, health card number were not numerical values, try again.";
                 $message = "Prescription Number, DIN, Health Care card Number were not numerical values, try again.";
+                $encodeJson = json_encode($message);
+                file_put_contents($fileName,$encodeJson);
             }
         } 
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "Prescription Number, DIN, Health Care card Number can't be empty";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>

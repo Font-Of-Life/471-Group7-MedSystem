@@ -40,7 +40,12 @@ session_start();
                     mysqli_query($conn, $queryRes);
 
                     //creates a new array for the json file, and registers the data saved from here into it
-                    $DataArr['Technician data:'] = array("TechID: " => $techid, "Password: " => $password, "First_name: " => $firstName, "Last_name: " => $lastName, "phone: "=> $phone);
+                    $DataArr['Technician data:'] = array(
+                        "TechID: " => $techid, 
+                        "Password: " => $password,
+                        "First_name: " => $firstName,
+                        "Last_name: " => $lastName,
+                        "phone: "=> $phone);
                     //encodes it in the format of a json file
                     $encodeJson = json_encode($DataArr);
                     //adds it to the json file provided

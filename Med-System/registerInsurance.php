@@ -4,7 +4,7 @@ session_start();
     // include the following php files
     include("connections.php");
     include("LoginChecker.php");
-    $fileName = 'jsonfile.json';
+    $fileName = 'jsonfile2.json';
     $dataArr = array();
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)

@@ -7,7 +7,7 @@ session_start();
 
     $patientHealthCardNum = $_SESSION['Gov_HealthCard_Num'];
     $pharmID = $_SESSION['UserID'];
-    $fileName = 'jsonfile.json';
+    $fileName = 'jsonfile2.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {

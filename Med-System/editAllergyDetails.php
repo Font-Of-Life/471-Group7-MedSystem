@@ -5,6 +5,7 @@ session_start();
     include("connections.php");
     include("LoginChecker.php");
     $healthcard = $_SESSION['HC'];
+    $fileName = 'jsonfile2.json';
 
     // using SERVER to check if the user has clicked on the post button (if request method = POST)
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -34,11 +35,20 @@ session_start();
                             $condQuery1 = "UPDATE `can_have` SET `Ingredient_Name` = '$Ingredient_Name' WHERE `can_have`.`Gov_HealthCard_Num` = $healthcard";
                             mysqli_query($conn, $condQuery1);
                             $_SESSION['Gov_HealthCard_Num'] = $healthcard;
+
+                            $DataArr["patient ".$healthcard." allergy update: "] = array(
+                                "Patient Healthcard number: " => $healthcard,
+                                "Ingredient Name: " => $row['Ingredient_Name']
+                            );
+                            $encodeJson = json_encode($DataArr);
+                            file_put_contents($fileName,$encodeJson);
                             header("Location: viewPatientDetails.php");
                             exit;
                         } 
                         else {
                             $message = "Patient's allergy already exists in database.";
+                            $encodeJson = json_encode($message);
+                            file_put_contents($fileName,$encodeJson);
                         }
                     } 
                     else {
@@ -48,6 +58,13 @@ session_start();
 
                         $queryRes2 = "insert into can_have (Ingredient_Name, Gov_HealthCard_Num) values ('$Ingredient_Name','$healthcard')";
                         mysqli_query($conn, $queryRes2);
+
+                        $DataArr["patient ".$healthcard." allergy update: "] = array(
+                            "Patient Healthcard number: " => $healthcard,
+                            "Ingredient Name: " => $row['Ingredient_Name']
+                        );
+                        $encodeJson = json_encode($DataArr);
+                        file_put_contents($fileName,$encodeJson);
                         $_SESSION['Gov_HealthCard_Num'] = $healthcard;
                         header("Location: viewPatientDetails.php");
                         exit;
@@ -56,6 +73,8 @@ session_start();
                 else{
                     //echo "Gov. Health card already exists, try again.";
                     $message = "Gov. Health card does not exists, try again.";
+                    $encodeJson = json_encode($message);
+                    file_put_contents($fileName,$encodeJson);
                 } 
             }
             
@@ -63,6 +82,8 @@ session_start();
         else {
             //echo "The only empty fields allowed are provider notes and email, try again.";
             $message = "Cannot have a empty field, try again.";
+            $encodeJson = json_encode($message);
+            file_put_contents($fileName,$encodeJson);
         }
     }
 ?>
